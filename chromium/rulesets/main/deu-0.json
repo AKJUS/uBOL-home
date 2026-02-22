@@ -267,7 +267,7 @@
 {"action":{"type":"block"},"condition":{"initiatorDomains":["mediabiz.de"],"urlFilter":"||airtable.com^*/superbanner728x90"},"id":266,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||ak-kurier.de/akkurier/www/images/"},"id":267,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||ak-kurier.de/akkurier/www/pic/"},"id":268,"priority":10},
-{"action":{"type":"allow"},"condition":{"initiatorDomains":["atv.at","autobild.de","businessinsider.de","chip.de","computerbild.de","gentside.de","oe24.at","ohmymag.de","phonostar.de","schwaebische.de","spielaffe.de","sport.sky.de","wetter.at","wetteronline.de"],"urlFilter":"||imasdk.googleapis.com/js/sdkloader/ima3.js"},"id":269,"priority":30},
+{"action":{"type":"allow"},"condition":{"initiatorDomains":["atv.at","autobild.de","businessinsider.de","chip.de","computerbild.de","gentside.de","oe24.at","ohmymag.de","phonostar.de","schwaebische.de","spielaffe.de","sport.sky.de","wetter.at","wetteronline.de","wwm.rtl.de"],"urlFilter":"||imasdk.googleapis.com/js/sdkloader/ima3.js"},"id":269,"priority":30},
 {"action":{"type":"block"},"condition":{"urlFilter":"||aktuell-kl.de/images/banners/"},"id":270,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||akustik-gitarre.com/uploads/tx_ricrotation/"},"id":271,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||algarve-entdecker.com/wp-content/uploads/*/xbanner-"},"id":272,"priority":10},

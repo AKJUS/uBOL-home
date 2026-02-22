@@ -729,5 +729,7 @@
 {"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["search_id"]}}},"type":"redirect"},"condition":{"resourceTypes":["main_frame"],"urlFilter":"||api.torob.com/v4/product-page/redirect^*^search_id="},"id":728},
 {"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["vastUrl"]}}},"type":"redirect"},"condition":{"domainType":"thirdParty","resourceTypes":["image","main_frame","sub_frame","xmlhttprequest"],"urlFilter":"||tamasha.com/embed^*^vastUrl="},"id":729},
 {"action":{"type":"block"},"condition":{"urlFilter":"||shomanews.com/uploads/advertisement^"},"id":730,"priority":10},
-{"action":{"type":"block"},"condition":{"urlFilter":"||bultannews.com/files/fa/adv^"},"id":731,"priority":10}
+{"action":{"type":"block"},"condition":{"urlFilter":"||bultannews.com/files/fa/adv^"},"id":731,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||hamrah-mechanic.com/mag/wp-content/uploads/*.gif^"},"id":732,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||rozup.ir/view/4190453/pop.js^"},"id":733,"priority":10}
 ]

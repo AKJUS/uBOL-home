@@ -129,5 +129,6 @@
 {"action":{"type":"block"},"condition":{"regexFilter":"^https:\\/\\/s[cfntz]y?[ace][acemnu][a-z]{1,4}or?[mn][a-z]{4,8}[iy][a-z]?\\.ru\\/","requestDomains":["ru"],"resourceTypes":["main_frame"]},"id":128,"priority":10},
 {"action":{"type":"block"},"condition":{"regexFilter":"^https?:\\/\\/qqh[0-9]\\.mom\\/","requestDomains":["mom"],"resourceTypes":["main_frame"]},"id":129,"priority":10},
 {"action":{"type":"block"},"condition":{"regexFilter":"^https:\\/\\/d[0-9a-z]{19}\\.[a-z]{3,4}-[a-z]{7,8}\\.[a-z]{3}\\/xm\\/xm\\d\\/\\?","requestDomains":["pro","sbs"],"resourceTypes":["main_frame"]},"id":130,"priority":10},
-{"action":{"type":"block"},"condition":{"regexFilter":"^https:\\/\\/blockchecker[0-9]\\.pages\\.dev\\/","requestDomains":["pages.dev"],"resourceTypes":["main_frame"]},"id":131,"priority":10}
+{"action":{"type":"block"},"condition":{"regexFilter":"^https:\\/\\/blockchecker[0-9]\\.pages\\.dev\\/","requestDomains":["pages.dev"],"resourceTypes":["main_frame"]},"id":131,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["z03.azurefd.net"],"isUrlFilterCaseSensitive":true,"regexFilter":"^https:\\/\\/[a-z]{5,20}-[0-9a-z]{16}\\.z03\\.azurefd\\.net\\/[0-9A-Za-z]+0[0-9A-Za-z]+\\/index\\.html","resourceTypes":["main_frame"]},"id":132,"priority":10}
 ]

@@ -478,155 +478,96 @@ class JSONPath {
     }
 }
 
-function editInboundObjectFn(
-    trusted = false,
-    propChain = '',
-    argPosRaw = '',
-    jsonq = '',
-) {
-    if ( propChain === '' ) { return; }
+function jsonEditXhrRequestFn(trusted, jsonq = '') {
     const safe = safeSelf();
     const logPrefix = safe.makeLogPrefix(
-        `${trusted ? 'trusted-' : ''}edit-inbound-object`,
-        propChain,
+        `${trusted ? 'trusted-' : ''}json-edit-xhr-request`,
         jsonq
     );
+    const xhrInstances = new WeakMap();
     const jsonp = JSONPath.create(jsonq);
     if ( jsonp.valid === false || jsonp.value !== undefined && trusted !== true ) {
         return safe.uboLog(logPrefix, 'Bad JSONPath query');
     }
-    const argPos = parseInt(argPosRaw, 10);
-    if ( isNaN(argPos) ) { return; }
-    const getArgPos = args => {
-        if ( Array.isArray(args) === false ) { return; }
-        if ( argPos >= 0 ) {
-            if ( args.length <= argPos ) { return; }
-            return argPos;
-        }
-        if ( args.length < -argPos ) { return; }
-        return args.length + argPos;
-    };
-    const editObj = obj => {
-        let clone;
-        try {
-            clone = safe.JSON_parse(safe.JSON_stringify(obj));
-        } catch {
-        }
-        if ( typeof clone !== 'object' || clone === null ) { return; }
-        const objAfter = jsonp.apply(clone);
-        if ( objAfter === undefined ) { return; }
-        safe.uboLog(logPrefix, 'Edited');
-        if ( safe.logLevel > 1 ) {
-            safe.uboLog(logPrefix, `After edit:\n${safe.JSON_stringify(objAfter, null, 2)}`);
-        }
-        return objAfter;
-    };
-    proxyApplyFn(propChain, function(context) {
-        const i = getArgPos(context.callArgs);
-        if ( i !== undefined ) {
-            const obj = editObj(context.callArgs[i]);
-            if ( obj ) {
-                context.callArgs[i] = obj;
+    const extraArgs = safe.getExtraArgs(Array.from(arguments), 2);
+    const propNeedles = parsePropertiesToMatchFn(extraArgs.propsToMatch, 'url');
+    self.XMLHttpRequest = class extends self.XMLHttpRequest {
+        open(method, url, ...args) {
+            const xhrDetails = { method, url };
+            const matched = propNeedles.size === 0 ||
+                matchObjectPropertiesFn(propNeedles, xhrDetails);
+            if ( matched ) {
+                if ( safe.logLevel > 1 && Array.isArray(matched) ) {
+                    safe.uboLog(logPrefix, `Matched "propsToMatch":\n\t${matched.join('\n\t')}`);
+                }
+                xhrInstances.set(this, xhrDetails);
             }
+            return super.open(method, url, ...args);
         }
-        return context.reflect();
-    });
+        send(body) {
+            const xhrDetails = xhrInstances.get(this);
+            if ( xhrDetails ) {
+                body = this.#filterBody(body) || body;
+            }
+            super.send(body);
+        }
+        #filterBody(body) {
+            if ( typeof body !== 'string' ) { return; }
+            let data;
+            try { data = safe.JSON_parse(body); }
+            catch { }
+            if ( data instanceof Object === false ) { return; }
+            const objAfter = jsonp.apply(data);
+            if ( objAfter === undefined ) { return; }
+            body = safe.JSON_stringify(objAfter);
+            safe.uboLog(logPrefix, 'Edited');
+            if ( safe.logLevel > 1 ) {
+                safe.uboLog(logPrefix, `After edit:\n${body}`);
+            }
+            return body;
+        }
+    };
 }
 
-function proxyApplyFn(
-    target = '',
-    handler = ''
-) {
-    let context = globalThis;
-    let prop = target;
-    for (;;) {
-        const pos = prop.indexOf('.');
-        if ( pos === -1 ) { break; }
-        context = context[prop.slice(0, pos)];
-        if ( context instanceof Object === false ) { return; }
-        prop = prop.slice(pos+1);
-    }
-    const fn = context[prop];
-    if ( typeof fn !== 'function' ) { return; }
-    if ( proxyApplyFn.CtorContext === undefined ) {
-        proxyApplyFn.ctorContexts = [];
-        proxyApplyFn.CtorContext = class {
-            constructor(...args) {
-                this.init(...args);
+function matchObjectPropertiesFn(propNeedles, ...objs) {
+    const safe = safeSelf();
+    const matched = [];
+    for ( const obj of objs ) {
+        if ( obj instanceof Object === false ) { continue; }
+        for ( const [ prop, details ] of propNeedles ) {
+            let value = obj[prop];
+            if ( value === undefined ) { continue; }
+            if ( typeof value !== 'string' ) {
+                try { value = safe.JSON_stringify(value); }
+                catch { }
+                if ( typeof value !== 'string' ) { continue; }
             }
-            init(callFn, callArgs) {
-                this.callFn = callFn;
-                this.callArgs = callArgs;
-                return this;
-            }
-            reflect() {
-                const r = Reflect.construct(this.callFn, this.callArgs);
-                this.callFn = this.callArgs = this.private = undefined;
-                proxyApplyFn.ctorContexts.push(this);
-                return r;
-            }
-            static factory(...args) {
-                return proxyApplyFn.ctorContexts.length !== 0
-                    ? proxyApplyFn.ctorContexts.pop().init(...args)
-                    : new proxyApplyFn.CtorContext(...args);
-            }
-        };
-        proxyApplyFn.applyContexts = [];
-        proxyApplyFn.ApplyContext = class {
-            constructor(...args) {
-                this.init(...args);
-            }
-            init(callFn, thisArg, callArgs) {
-                this.callFn = callFn;
-                this.thisArg = thisArg;
-                this.callArgs = callArgs;
-                return this;
-            }
-            reflect() {
-                const r = Reflect.apply(this.callFn, this.thisArg, this.callArgs);
-                this.callFn = this.thisArg = this.callArgs = this.private = undefined;
-                proxyApplyFn.applyContexts.push(this);
-                return r;
-            }
-            static factory(...args) {
-                return proxyApplyFn.applyContexts.length !== 0
-                    ? proxyApplyFn.applyContexts.pop().init(...args)
-                    : new proxyApplyFn.ApplyContext(...args);
-            }
-        };
-        proxyApplyFn.isCtor = new Map();
-        proxyApplyFn.proxies = new WeakMap();
-        proxyApplyFn.nativeToString = Function.prototype.toString;
-        const proxiedToString = new Proxy(Function.prototype.toString, {
-            apply(target, thisArg) {
-                let proxied = thisArg;
-                for(;;) {
-                    const fn = proxyApplyFn.proxies.get(proxied);
-                    if ( fn === undefined ) { break; }
-                    proxied = fn;
-                }
-                return proxyApplyFn.nativeToString.call(proxied);
-            }
-        });
-        proxyApplyFn.proxies.set(proxiedToString, proxyApplyFn.nativeToString);
-        Function.prototype.toString = proxiedToString;
-    }
-    if ( proxyApplyFn.isCtor.has(target) === false ) {
-        proxyApplyFn.isCtor.set(target, fn.prototype?.constructor === fn);
-    }
-    const proxyDetails = {
-        apply(target, thisArg, args) {
-            return handler(proxyApplyFn.ApplyContext.factory(target, thisArg, args));
+            if ( safe.testPattern(details, value) === false ) { return; }
+            matched.push(`${prop}: ${value}`);
         }
-    };
-    if ( proxyApplyFn.isCtor.get(target) ) {
-        proxyDetails.construct = function(target, args) {
-            return handler(proxyApplyFn.CtorContext.factory(target, args));
-        };
     }
-    const proxiedTarget = new Proxy(fn, proxyDetails);
-    proxyApplyFn.proxies.set(proxiedTarget, fn);
-    context[prop] = proxiedTarget;
+    return matched;
+}
+
+function parsePropertiesToMatchFn(propsToMatch, implicit = '') {
+    const safe = safeSelf();
+    const needles = new Map();
+    if ( propsToMatch === undefined || propsToMatch === '' ) { return needles; }
+    const options = { canNegate: true };
+    for ( const needle of safe.String_split.call(propsToMatch, /\s+/) ) {
+        let [ prop, pattern ] = safe.String_split.call(needle, ':');
+        if ( prop === '' ) { continue; }
+        if ( pattern !== undefined && /[^$\w -]/.test(prop) ) {
+            prop = `${prop}:${pattern}`;
+            pattern = undefined;
+        }
+        if ( pattern !== undefined ) {
+            needles.set(prop, safe.initPattern(pattern, options));
+        } else if ( implicit !== '' ) {
+            needles.set(implicit, safe.initPattern(prop, options));
+        }
+    }
+    return needles;
 }
 
 function safeSelf() {
@@ -820,8 +761,8 @@ function safeSelf() {
     return safe;
 }
 
-function trustedEditInboundObject(propChain = '', argPos = '', jsonq = '') {
-    editInboundObjectFn(true, propChain, argPos, jsonq);
+function trustedJsonEditXhrRequest(jsonq = '', ...args) {
+    jsonEditXhrRequestFn(true, jsonq, ...args);
 }
 
 /******************************************************************************/
@@ -829,13 +770,13 @@ function trustedEditInboundObject(propChain = '', argPos = '', jsonq = '') {
 const scriptletGlobals = {}; // eslint-disable-line
 
 const $scriptletFunctions$ = /* 1 */
-[trustedEditInboundObject];
+[trustedJsonEditXhrRequest];
 
-const $scriptletArgs$ = /* 4 */ ["JSON.stringify","0","[?..playbackContext.contentPlaybackContext][?!.attestationRequest][?!.captionsRequested][?!.settingItemIds][?!..mainAppWebInfo.graftUrl*=\"&list=\"][?!..mainAppWebInfo.graftUrl*=\"/shorts/\"][?.params][?!.params^=\"yAEB\"].params=repl({\"regex\":\"^\",\"replacement\":\"yAEB\"})","[?..playbackContext.contentPlaybackContext][?!.attestationRequest][?!.captionsRequested][?!.settingItemIds][?!..mainAppWebInfo.graftUrl*=\"&list=\"][?!..mainAppWebInfo.graftUrl*=\"/shorts/\"][?!.params]+={\"params\":\"yAEB\"}"];
+const $scriptletArgs$ = /* 5 */ ["[?..userAgent*=\"channel\"]..client[?.clientName==\"WEB\"]+={\"clientScreen\":\"CHANNEL\"}","propsToMatch","/player?","[?..userAgent*=\"adunit\"]..client[?.clientName==\"WEB\"]+={\"clientScreen\":\"ADUNIT\"}","[?..userAgent=/adunit|channel/]..referer=repl({\"regex\":\"$\",\"replacement\":\"#reloadxhr\"})"];
 
-const $scriptletArglists$ = /* 2 */ "0,0,1,2;0,0,1,3";
+const $scriptletArglists$ = /* 3 */ "0,0,1,2;0,3,1,2;0,4,1,2";
 
-const $scriptletArglistRefs$ = /* 1 */ "0,1";
+const $scriptletArglistRefs$ = /* 1 */ "0,1,2";
 
 const $scriptletHostnames$ = /* 1 */ ["www.youtube.com"];
 

@@ -19,7 +19,7 @@
     Home: https://github.com/gorhill/uBlock
 */
 
-// ublock-badware
+// ublock-experimental
 
 // Important!
 // Isolate from global scope
@@ -27,9 +27,9 @@
 
 /******************************************************************************/
 
-const genericSelectorMap = [[801,"html[lang] > body.ishome > div.adult + main.main"],[1485,".buttonautocl"],[2734,"html[lang] > body:not([class]):not([id]):not([style]) > div.background-container > div.container > div.captcha-box"],[2472,"html[lang] > body.startnew > div#sections > section#section_uname"],[2818,"html[lang] > body:not([style]) > div.captchaBody"],[1216,"html[lang] > body#body > * > div.cv-xwrapper > div.cvc > div.cv-inner"],[128,"html[lang] > body#body > * > div.cvh.BlockClicksActivityBusy"],[3130,"html#html[sti][vic][lang] > body#allbody"],[695,"html > body > div.container.m-p > #checkbox-window.checkbox-window,\nhtml > body > div.container > form#unsubscribe-form[onsubmit=\"submitUnsubscribeForm(event)\"]"],[2535,".fkrc-verifywin-window"],[3362,".fkrc-checkbox-window"],[3834,"html[lang] > body:not([class]):not([id]):not([style]) > div.container > div.recaptcha-box"],[2967,"body > .security-container[style=\"opacity: 1; transform: translateY(0px);\"]"],[2490,"html > body.hold-transition.theme-primary.bg-img[style^=\"background-image\"][style*=\"wallpaperaccess.com\"][style*=\"background-repeat\"][style*=\"background-size\"]"],[1856,"html > body > div.content > dl > dd.dd1 > div.min_sider > form#form1[action=\"unsubscribe.php\"]"],[3514,"html > body.body > div.container > div.content > form > table.optoutForm"],[2430,"html[data-scrapbook-source][data-scrapbook-create][data-scrapbook-title] > body.no-js > div.main-wrapper[role=\"main\"] > div.main-content"],[1510,".header-fix-tester-container"]];
-const genericExceptionSieve = undefined;
-const genericExceptionMap = undefined;
+const genericSelectorMap = undefined;
+const genericExceptionSieve = [1040,471];
+const genericExceptionMap = [["www.youtube.com","#page-manager:has(#player-error-message-container #subreason a.yt-simple-endpoint[href=\"https://support.google.com/youtube/answer/3037019\"]) yt-playability-error-supported-renderers#error-screen\n.ytdMiniplayerPlayerContainerHost .ytdMiniplayerPlayerContainerPlayabilityError"]];
 
 if ( genericSelectorMap ) {
     const map = self.genericSelectorMap =

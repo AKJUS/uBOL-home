@@ -350,7 +350,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"/peertube-plugin-google-analytics"},"id":349,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/permutive-async.js"},"id":350,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/pfizer_analytics"},"id":351,"priority":10},
-{"action":{"type":"block"},"condition":{"initiatorDomains":["kimura.se"],"urlFilter":"/ping"},"id":352,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["djurbibeln.se","ettgottskratt.se","humorbibeln.se","inkopsradet.se","matbibeln.se","newsner.com","nojeslivet.se","sportbibeln.se","vegomagasinet.se"],"resourceTypes":["script"],"urlFilter":"/plugins/advanced-ads"},"id":352,"priority":10},
 {"action":{"type":"block"},"condition":{"initiatorDomains":["tvmatchen.nu"],"urlFilter":"/smartbanner"},"id":353,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/playbuzz-ads-core"},"id":354,"priority":10},
 {"action":{"type":"block"},"condition":{"initiatorDomains":["tv.aftonbladet.se"],"urlFilter":"/player-plugin-ad"},"id":355,"priority":10},
@@ -414,7 +414,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/likebtn-like-button/"},"id":413,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/madonltd-full-screen-ad"},"id":414,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/mashshare"},"id":415,"priority":10},
-{"action":{"type":"block"},"condition":{"initiatorDomains":["djurbibeln.se","ettgottskratt.se","humorbibeln.se","matbibeln.se","newsner.com","nojeslivet.se","sportbibeln.se","vegomagasinet.se"],"resourceTypes":["script"],"urlFilter":"/plugins/advanced-ads"},"id":416,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["feber.se","kimura.se","tjock.se"],"urlFilter":"/ping"},"id":416,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/metro-affiliate"},"id":417,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/mitti-adform"},"id":418,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/ml-adverts"},"id":419,"priority":10},
@@ -1386,5 +1386,10 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"/plugins/smoothpagescroll"},"id":1385,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||tv.aftonbladet.se/static/js/codigo"},"id":1386,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||tv.aftonbladet.se/static/js/mbl"},"id":1387,"priority":10},
-{"action":{"type":"block"},"condition":{"initiatorDomains":["cfosvepet.se","hrsvepet.se","vdsvepet.se"],"urlFilter":"||supabase.co^"},"id":1388,"priority":10}
+{"action":{"type":"block"},"condition":{"initiatorDomains":["cfosvepet.se","hrsvepet.se","vdsvepet.se"],"urlFilter":"||supabase.co^"},"id":1388,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["expressen.se"],"urlFilter":"/codigo"},"id":1389,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["gamereactor.se"],"resourceTypes":["script"],"urlFilter":"/prebid*."},"id":1390,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"/plugins/pixel-review-partnerlinker-addon"},"id":1391,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||i.posthog.com/*/?retry_count"},"id":1392,"priority":10},
+{"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||feber.se/native/"},"id":1393,"priority":10}
 ]

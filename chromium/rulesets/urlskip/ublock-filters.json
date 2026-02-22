@@ -1237,6 +1237,12 @@
   ]
  },
  {
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?trendmicro\\.com/wis/clicktime/v\\S*?/query\\?url=http",
+  "steps": [
+   "?url"
+  ]
+ },
+ {
   "re": "/vp/player/to/\\?u=http",
   "steps": [
    "?u"

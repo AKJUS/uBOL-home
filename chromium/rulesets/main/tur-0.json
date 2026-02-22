@@ -1202,6 +1202,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||bosssports*.com/*.gif"},"id":1201,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||inattvizle*.top/lib/uploads/r/"},"id":1202,"priority":10},
 {"action":{"type":"allow"},"condition":{"resourceTypes":["script"],"urlFilter":"||sozcu.com.tr/lib/adsv2_dist/postdetailpageclient_tr.js"},"id":1203,"priority":30},
+{"action":{"type":"block"},"condition":{"urlFilter":"/tr?tag="},"id":1204,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||otobettv*.com/banner.gif"},"id":1205,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||belestepe*.sbs//wp-content/uploads/*.gif"},"id":1206,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||filmizlefullhd.pw/*.mp4"},"id":1207,"priority":10},
@@ -1255,5 +1256,9 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||hdfilmcehennemi*.org/wp-content/themes/diziplus/js/pld.js"},"id":1255,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||turkifsalar*.space/wp-content/plugins/"},"id":1256,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||bahisotv*.com/banner"},"id":1257,"priority":10},
-{"action":{"type":"block"},"condition":{"urlFilter":"||cdn.jsdelivr.net/gh/lookatusdoweneedu/v/*.mp4"},"id":1258,"priority":10}
+{"action":{"type":"block"},"condition":{"urlFilter":"||cdn.jsdelivr.net/gh/lookatusdoweneedu/v/*.mp4"},"id":1258,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||pornoizle9.icu/pk8/ntr/b100.js"},"id":1259,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||ifsakolik.com/*.gif"},"id":1260,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||cimcime*.com/wp-content/uploads/*.gif"},"id":1261,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||dahahizli*.com/wp-content/uploads/*.gif"},"id":1262,"priority":10}
 ]
