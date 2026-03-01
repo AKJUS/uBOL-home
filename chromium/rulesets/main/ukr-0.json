@@ -1283,6 +1283,7 @@
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||pingmedia.ru/images/"},"id":1282,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||play.zzima.com/*?ref="},"id":1283,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||pokerstrategy.com/#"},"id":1284,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"/kinogo/js/ads/"},"id":1285,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||pop-parad."},"id":1286,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||pop-under."},"id":1287,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||poptraf."},"id":1288,"priority":10},

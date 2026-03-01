@@ -221,6 +221,31 @@ function abortOnPropertyRead(
     makeProxy(owner, chain);
 }
 
+function abortOnPropertyWrite(
+    prop = ''
+) {
+    if ( typeof prop !== 'string' ) { return; }
+    if ( prop === '' ) { return; }
+    const safe = safeSelf();
+    const logPrefix = safe.makeLogPrefix('abort-on-property-write', prop);
+    const exceptionToken = getExceptionTokenFn();
+    let owner = window;
+    for (;;) {
+        const pos = prop.indexOf('.');
+        if ( pos === -1 ) { break; }
+        owner = owner[prop.slice(0, pos)];
+        if ( owner instanceof Object === false ) { return; }
+        prop = prop.slice(pos + 1);
+    }
+    delete owner[prop];
+    Object.defineProperty(owner, prop, {
+        set: function() {
+            safe.uboLog(logPrefix, 'Aborted');
+            throw new ReferenceError(exceptionToken);
+        }
+    });
+}
+
 function adjustSetInterval(
     needleArg = '',
     delayArg = '',
@@ -1229,16 +1254,16 @@ function shouldDebug(details) {
 
 const scriptletGlobals = {}; // eslint-disable-line
 
-const $scriptletFunctions$ = /* 9 */
-[abortCurrentScript,preventAddEventListener,abortOnPropertyRead,adjustSetInterval,preventFetch,preventXhr,noEvalIf,preventSetTimeout,noWindowOpenIf];
+const $scriptletFunctions$ = /* 10 */
+[abortCurrentScript,preventAddEventListener,abortOnPropertyRead,adjustSetInterval,preventFetch,preventXhr,noEvalIf,preventSetTimeout,noWindowOpenIf,abortOnPropertyWrite];
 
-const $scriptletArgs$ = /* 25 */ ["document.addEventListener","popup","getComputedStyle","","cpm","click","linkOpened","load","/adblock/i","scroll","kgSticky","$.magnificPopup.open","LieDetector","popup_custom_data","ads.google.com","adsbygoogle","clarity.ms","trafficbass.com","googlesyndication","/chp_?ad/","console","location.href","3000","SGPB_POPUP_PARAMS","chp_ads_blocker_detector"];
+const $scriptletArgs$ = /* 26 */ ["document.addEventListener","popup","getComputedStyle","","cpm","click","linkOpened","load","/adblock/i","scroll","kgSticky","$.magnificPopup.open","LieDetector","popup_custom_data","ads.google.com","adsbygoogle","clarity.ms","trafficbass.com","googlesyndication","/chp_?ad/","console","location.href","3000","MutationObserver","SGPB_POPUP_PARAMS","chp_ads_blocker_detector"];
 
-const $scriptletArglists$ = /* 20 */ "0,0,1;0,2,3,4;1,5,6;1,7,8;1,9,10;2,11;2,12;2,13;3;4,14;4,15;4,16;4,17;5,18;6,19;7,20;7,21,22;8;2,23;0,24";
+const $scriptletArglists$ = /* 21 */ "0,0,1;0,2,3,4;1,5,6;1,7,8;1,9,10;2,11;2,12;2,13;3;4,14;4,15;4,16;4,17;5,18;6,19;7,20;7,21,22;8;9,23;2,24;0,25";
 
-const $scriptletArglistRefs$ = /* 39 */ "11,15;9;1;17;0;18;17;17;17;4;19;17;17;13;17;12;17;17;14;14;8,14;17;14;3;16;6;17;2;7;14;5;17;17;13,17;8;10;17;2;8,10";
+const $scriptletArglistRefs$ = /* 41 */ "11,15;9;1;17;0;19;17;17;17;4;20;17;17;17;13;17;12;17;17;14;18;14;8,14;17;14;3;16;6;17;2;7;14;5;17;17;13,17;8;10;17;2;8,10";
 
-const $scriptletHostnames$ = /* 39 */ ["netq.me","mudah.my","doroni.me","kiryuu.id","onnano.tv","dicrotin.*","igodesu.tv","indobo.com","kiryuu.org","kompas.com","lk21semi.*","njavtv.com","sukasex.tv","tutwuri.id","anichin.top","moenime.com","sukasex.net","westmanga.*","5.253.86.213","igobokep.cam","jenismac.com","kiryuu01.com","ainzscans.net","moutogami.com","moviekhhd.biz","3gpterbaru.com","animekompi.vip","info.vebma.com","sk21.sob4t.xyz","193.142.147.230","juraganfilm.ink","kimcilonly.site","komikcast02.com","jurnalistekno.id","bahasteknologi.com","thejakartapost.com","kisahterlarang.site","info.mapsaddress.com","cloud.majalahhewan.com"];
+const $scriptletHostnames$ = /* 41 */ ["netq.me","mudah.my","doroni.me","kiryuu.id","onnano.tv","dicrotin.*","igodesu.tv","indobo.com","kiryuu.org","kompas.com","lk21semi.*","nimegami.*","njavtv.com","sukasex.tv","tutwuri.id","anichin.top","moenime.com","sukasex.net","westmanga.*","5.253.86.213","animekompi.*","igobokep.cam","jenismac.com","kiryuu01.com","ainzscans.net","moutogami.com","moviekhhd.biz","3gpterbaru.com","animekompi.vip","info.vebma.com","sk21.sob4t.xyz","193.142.147.230","juraganfilm.ink","kimcilonly.site","komikcast02.com","jurnalistekno.id","bahasteknologi.com","thejakartapost.com","kisahterlarang.site","info.mapsaddress.com","cloud.majalahhewan.com"];
 
 const $scriptletFromRegexes$ = /* 0 */ [];
 

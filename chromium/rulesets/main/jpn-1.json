@@ -1204,6 +1204,7 @@
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||cont.pancolle-movie.jp/affer_img/"},"id":1203,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||dlsite.com/*/bn_pc_250_250_"},"id":1204,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||jbr-cs.com/af/"},"id":1205,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||encount.press/jobs.json"},"id":1206,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||maniax-uploads.com/imglib/storage1/*-x_banner-"},"id":1207,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||coneti.net/post_image/mt_20220623211055_jf696njuwbnw.jpg"},"id":1208,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||ssp.socoms.net/newsletterbannerorurl?"},"id":1209,"priority":10},

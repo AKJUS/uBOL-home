@@ -441,7 +441,10 @@ class JSONPath {
         if ( outcome ) { return k; }
     }
     #modifyVal(obj, key) {
-        const { modify, rval } = this.#compiled;
+        let { modify, rval } = this.#compiled;
+        if ( typeof rval === 'string' ) {
+            rval = rval.replace('${now}', `${Date.now()}`);
+        }
         switch ( modify ) {
         case undefined:
             obj[key] = rval;
@@ -525,6 +528,74 @@ function jsonEditXhrRequestFn(trusted, jsonq = '') {
                 safe.uboLog(logPrefix, `After edit:\n${body}`);
             }
             return body;
+        }
+    };
+}
+
+function jsonEditXhrResponseFn(trusted, jsonq = '') {
+    const safe = safeSelf();
+    const logPrefix = safe.makeLogPrefix(
+        `${trusted ? 'trusted-' : ''}json-edit-xhr-response`,
+        jsonq
+    );
+    const xhrInstances = new WeakMap();
+    const jsonp = JSONPath.create(jsonq);
+    if ( jsonp.valid === false || jsonp.value !== undefined && trusted !== true ) {
+        return safe.uboLog(logPrefix, 'Bad JSONPath query');
+    }
+    const extraArgs = safe.getExtraArgs(Array.from(arguments), 2);
+    const propNeedles = parsePropertiesToMatchFn(extraArgs.propsToMatch, 'url');
+    self.XMLHttpRequest = class extends self.XMLHttpRequest {
+        open(method, url, ...args) {
+            const xhrDetails = { method, url };
+            const matched = propNeedles.size === 0 ||
+                matchObjectPropertiesFn(propNeedles, xhrDetails);
+            if ( matched ) {
+                if ( safe.logLevel > 1 && Array.isArray(matched) ) {
+                    safe.uboLog(logPrefix, `Matched "propsToMatch":\n\t${matched.join('\n\t')}`);
+                }
+                xhrInstances.set(this, xhrDetails);
+            }
+            return super.open(method, url, ...args);
+        }
+        get response() {
+            const innerResponse = super.response;
+            const xhrDetails = xhrInstances.get(this);
+            if ( xhrDetails === undefined ) { return innerResponse; }
+            const responseLength = typeof innerResponse === 'string'
+                ? innerResponse.length
+                : undefined;
+            if ( xhrDetails.lastResponseLength !== responseLength ) {
+                xhrDetails.response = undefined;
+                xhrDetails.lastResponseLength = responseLength;
+            }
+            if ( xhrDetails.response !== undefined ) {
+                return xhrDetails.response;
+            }
+            let obj;
+            if ( typeof innerResponse === 'object' ) {
+                obj = innerResponse;
+            } else if ( typeof innerResponse === 'string' ) {
+                try { obj = safe.JSON_parse(innerResponse); } catch { }
+            }
+            if ( typeof obj !== 'object' || obj === null ) {
+                return (xhrDetails.response = innerResponse);
+            }
+            const objAfter = jsonp.apply(obj);
+            if ( objAfter === undefined ) {
+                return (xhrDetails.response = innerResponse);
+            }
+            safe.uboLog(logPrefix, 'Edited');
+            const outerResponse = typeof innerResponse === 'string'
+                ? JSONPath.toJSON(objAfter, safe.JSON_stringify)
+                : objAfter;
+            return (xhrDetails.response = outerResponse);
+        }
+        get responseText() {
+            const response = this.response;
+            return typeof response !== 'string'
+                ? super.responseText
+                : response;
         }
     };
 }
@@ -765,18 +836,22 @@ function trustedJsonEditXhrRequest(jsonq = '', ...args) {
     jsonEditXhrRequestFn(true, jsonq, ...args);
 }
 
+function trustedJsonEditXhrResponse(jsonq = '', ...args) {
+    jsonEditXhrResponseFn(true, jsonq, ...args);
+}
+
 /******************************************************************************/
 
 const scriptletGlobals = {}; // eslint-disable-line
 
-const $scriptletFunctions$ = /* 1 */
-[trustedJsonEditXhrRequest];
+const $scriptletFunctions$ = /* 2 */
+[trustedJsonEditXhrRequest,trustedJsonEditXhrResponse];
 
-const $scriptletArgs$ = /* 5 */ ["[?..userAgent*=\"channel\"]..client[?.clientName==\"WEB\"]+={\"clientScreen\":\"CHANNEL\"}","propsToMatch","/player?","[?..userAgent*=\"adunit\"]..client[?.clientName==\"WEB\"]+={\"clientScreen\":\"ADUNIT\"}","[?..userAgent=/adunit|channel/]..referer=repl({\"regex\":\"$\",\"replacement\":\"#reloadxhr\"})"];
+const $scriptletArgs$ = /* 7 */ ["[?..userAgent*=\"adunit\"]..client[?.clientName==\"WEB\"]+={\"clientScreen\":\"ADUNIT\"}","propsToMatch","/player?","[?..userAgent*=\"lactmilli\"][?..graftUrl*=\"&list=\"]+={\"params\":\"8AUB\"}","[?..userAgent*=\"instream\"]..playbackContext[?.contentPlaybackContext]+={\"adPlaybackContext\":{\"adType\":\"AD_TYPE_INSTREAM\"}}","[?..userAgent*=\"eafg\"]+={\"params\":\"eAFgAQ\"}","[?..minimumPlaybackRate==100]..playerConfig.granularVariableSpeedConfig+={\"minimumPlaybackRate\":25,\"maximumPlaybackRate\":200,\"defaultPlaybackRateOptions\":[{\"label\":\"1.0\",\"value\":100,\"isPremiumUpsell\":false,\"priority\":5},{\"label\":\"1.25\",\"value\":125,\"isPremiumUpsell\":false,\"priority\":2},{\"label\":\"1.5\",\"value\":150,\"isPremiumUpsell\":false,\"priority\":3},{\"label\":\"1.75\",\"value\":175,\"isPremiumUpsell\":false,\"priority\":0},{\"label\":\"2.0\",\"value\":200,\"isPremiumUpsell\":false,\"priority\":4},{\"label\":\"3.0\",\"value\":300,\"isPremiumUpsell\":true,\"priority\":1}]}"];
 
-const $scriptletArglists$ = /* 3 */ "0,0,1,2;0,3,1,2;0,4,1,2";
+const $scriptletArglists$ = /* 5 */ "0,0,1,2;0,3,1,2;0,4,1,2;0,5,1,2;1,6,1,2";
 
-const $scriptletArglistRefs$ = /* 1 */ "0,1,2";
+const $scriptletArglistRefs$ = /* 1 */ "0,1,2,3,4";
 
 const $scriptletHostnames$ = /* 1 */ ["www.youtube.com"];
 

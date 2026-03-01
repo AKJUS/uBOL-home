@@ -421,5 +421,6 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||minorasu.basf.co.jp/shared/scripts/questionnaire.js"},"id":420,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||timesprayer.today/widget_frame.php"},"id":421,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||cdnapps.avada.io/faq/sounds/"},"id":422,"priority":10},
-{"action":{"type":"block"},"condition":{"urlFilter":"/akam-sw.js"},"id":423,"priority":10}
+{"action":{"type":"block"},"condition":{"urlFilter":"/akam-sw.js"},"id":423,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||client.salesmartly.com/setting/sounds/"},"id":424,"priority":10}
 ]

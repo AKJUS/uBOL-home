@@ -17,6 +17,21 @@
   "type": "block"
  },
  "condition": {
+  "domainType": "thirdParty",
+  "isUrlFilterCaseSensitive": true,
+  "regexFilter": "^https:\\/\\/cdn\\.bcdn\\.zip\\/scripts\\/[a-z]+[0-9]\\.min\\.js$",
+  "resourceTypes": [
+   "script"
+  ]
+ },
+ "id": 2,
+ "priority": 10
+},
+{
+ "action": {
+  "type": "block"
+ },
+ "condition": {
   "initiatorDomains": [
    "zubby.com"
   ],

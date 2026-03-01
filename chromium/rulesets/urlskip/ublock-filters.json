@@ -269,7 +269,7 @@
   ]
  },
  {
-  "re": "^[a-z-]+://(?:[^/?#]+\\.)?adslink\\.pw/webroot/link/api\\?url=http",
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?adslink\\.pw/\\S*?/api\\?url=http",
   "steps": [
    "?url"
   ]
@@ -1243,6 +1243,19 @@
   ]
  },
  {
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?c\\.vialoops\\.com/cl0/http",
+  "steps": [
+   "/\\/CL0\\/(http[^\\/?#]+)/",
+   "-uricomponent"
+  ]
+ },
+ {
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?page\\.link/\\?link=http",
+  "steps": [
+   "?link"
+  ]
+ },
+ {
   "re": "/vp/player/to/\\?u=http",
   "steps": [
    "?u"
@@ -1320,6 +1333,24 @@
   "re": "^[a-z-]+://(?:[^/?#]+\\.)?redir\\.me/\\?http",
   "steps": [
    "/\\?(http.+)/"
+  ]
+ },
+ {
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?tracking\\.agoda\\.com/click\\?redirecturl=",
+  "steps": [
+   "?redirectUrl"
+  ]
+ },
+ {
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?deeplink\\.trip\\.com/forward/middlepages/\\?targeturl=",
+  "steps": [
+   "?targetUrl"
+  ]
+ },
+ {
+  "re": "^[a-z-]+://(?:[^/?#]+\\.)?triplink\\.trip\\.com/forward/middlepages/channel/edm\\?targeturl=",
+  "steps": [
+   "?targetUrl"
   ]
  }
 ]
