@@ -1,3 +1,10 @@
+- [Add support for highly generic cosmetic filter exceptions](https://github.com/gorhill/uBlock/commit/e2df53d0de)
+- [Support copying/pasting custom filters](https://github.com/gorhill/uBlock/commit/11b749e0a3)
+
+----------
+
+### 2026.426.1536
+
 - [Fix various concurrency issues with "Restore" operation](https://github.com/gorhill/uBlock/commit/83c51b12b1)
 - [Fix export button in "Custom filters" pane](https://github.com/gorhill/uBlock/commit/d8558aa56b)
 - [Fix visual of "Remove a custom filter" for procedural filters](https://github.com/gorhill/uBlock/commit/bdc3bace25)
