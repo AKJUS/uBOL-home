@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 42 */[[1275,"#ad_popup"],[59419,"#adRectangle"],[60256,"#onlajny-stickers"],[10624,"#promo-box"],[19810,"#reklama-etarget"],[2331,"#reklamni-box"],[15841,"#reklamy"],[48368,"#sklik"],[31243,"#slevomat_ad"],[24947,"#topbanner"],[29355,"#zivefirmy"],[45393,".adform-adbox"],[14401,".bx-leaderboard"],[5532,".cnc-ads"],[3869,".etarget"],[25079,".hp-advert"],[61701,".jobscz"],[56213,".lsads-banner"],[63618,".nativead"],[8568,".ownad"],[10528,".perex-adblock-warning"],[45244,".r-main"],[55277,".reklama-3"],[33024,".reklama-bottom"],[10310,".reklama-box"],[22993,".reklama-left"],[19524,".reklama-lista"],[39957,".reklama-megaboard"],[9307,".reklama-right"],[9496,".reklama-top"],[20396,".reklamaBottom"],[59882,".reklamaHorniLista"],[31962,".reklama_ahead"],[17901,".reklama_square"],[38066,".rklm"],[11261,".sklik"],[53719,".sklik-block"],[10601,".sklik-box"],[51482,".sklik_left"],[36048,".sklik_right"],[43396,".topreklama"],[59437,".vreklama"]]);
+const highlyGeneric = /* 4 */"[id^=\"etarget\"],\n[id^=\"aswift\"],\n[id^=\"sklikReklama\"],\n[id^=\"sm-ad\"]";
+const exceptions = /* 12 */[".ads-box\n.reklama-box",".g_ad","#adsense",".r-main",".adBanner",".reklama","#adverts",".advertising-content",".reklama",".reklama",".rklm","#ad_skin"];
+const hostnames = /* 12 */["denik.cz","novinky.cz","skrblik.cz","hyundai.com","aktuality.sk","mazdaclub.cz","sluzebnik.cz","vranovske.sk","nissanclub.cz","jaguar-club.net","www.parabola.cz","dobre-recepty.sk"];
+const hasEntities = false;
 
-const genericSelectorMap = [[1275,"#ad_popup"],[2075,"#adRectangle"],[2912,"#onlajny-stickers"],[2432,"#promo-box"],[3426,"#reklama-etarget"],[2331,"#reklamni-box"],[3553,"#reklamy"],[3312,"#sklik"],[2571,"#slevomat_ad"],[371,"#topbanner"],[683,"#zivefirmy"],[337,".adform-adbox"],[2113,".bx-leaderboard"],[1436,".cnc-ads"],[3869,".etarget"],[503,".hp-advert"],[261,".jobscz"],[2965,".lsads-banner"],[2178,".nativead"],[376,".ownad"],[2336,".perex-adblock-warning"],[188,".r-main"],[2029,".reklama-3"],[256,".reklama-bottom"],[2118,".reklama-box"],[2513,".reklama-left"],[3140,".reklama-lista"],[3093,".reklama-megaboard"],[1115,".reklama-right"],[1304,".reklama-top"],[4012,".reklamaBottom"],[2538,".reklamaHorniLista"],[3290,".reklama_ahead"],[1517,".reklama_square"],[1202,".rklm"],[3069,".sklik"],[471,".sklik-block"],[2409,".sklik-box"],[2330,".sklik_left"],[3280,".sklik_right"],[2436,".topreklama"],[2093,".vreklama"]];
-const genericExceptionSieve = [615,2118,188,2548,1175,1202,1071,519,2711,4033,1565];
-const genericExceptionMap = [["denik.cz",".ads-box\n.reklama-box"],["hyundai.com",".r-main"],["jaguar-club.net",".reklama"],["mazdaclub.cz",".reklama"],["nissanclub.cz",".reklama"],["novinky.cz",".g_ad"],["www.parabola.cz",".rklm"],["skrblik.cz","#adsense"],["sluzebnik.cz","#adverts"],["aktuality.sk",".adBanner"],["dobre-recepty.sk","#ad_skin"],["vranovske.sk",".advertising-content"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

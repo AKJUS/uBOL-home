@@ -1257,13 +1257,13 @@ const scriptletGlobals = {}; // eslint-disable-line
 const $scriptletFunctions$ = /* 10 */
 [abortOnPropertyRead,abortOnPropertyWrite,abortCurrentScript,preventAddEventListener,adjustSetInterval,preventFetch,preventXhr,noEvalIf,preventSetTimeout,noWindowOpenIf];
 
-const $scriptletArgs$ = /* 24 */ ["SGPB_POPUP_PARAMS","MutationObserver","chp_ads_blocker_detector","getComputedStyle","","cpm","click","linkOpened","load","/adblock/i","scroll","kgSticky","$.magnificPopup.open","LieDetector","popup_custom_data","ads.google.com","adsbygoogle","clarity.ms","trafficbass.com","googlesyndication","/chp_?ad/","console","location.href","3000"];
+const $scriptletArgs$ = /* 26 */ ["SGPB_POPUP_PARAMS","MutationObserver","chp_ads_blocker_detector","document.addEventListener","window.open","getComputedStyle","","cpm","click","linkOpened","load","/adblock/i","scroll","kgSticky","$.magnificPopup.open","LieDetector","popup_custom_data","ads.google.com","adsbygoogle","clarity.ms","trafficbass.com","googlesyndication","/chp_?ad/","console","location.href","3000"];
 
-const $scriptletArglists$ = /* 20 */ "0,0;1,1;2,2;2,3,4,5;3,6,7;3,8,9;3,10,11;0,12;0,13;0,14;4;5,15;5,16;5,17;5,18;6,19;7,20;8,21;8,22,23;9";
+const $scriptletArglists$ = /* 21 */ "0,0;1,1;2,2;2,3,4;2,5,6,7;3,8,9;3,10,11;3,12,13;0,14;0,15;0,16;4;5,17;5,18;5,19;5,20;6,21;7,22;8,23;8,24,25;9";
 
-const $scriptletArglistRefs$ = /* 37 */ "13,17;11;3;19;0;19;19;19;6;2;19;19;19;15;19;14;19;19;16;1;10,16;19;16;5;18;8;19;4;9;16;7;19;19;15,19;10;12;19";
+const $scriptletArglistRefs$ = /* 38 */ "14,18;12;4;20;3;0;20;20;20;7;2;20;20;20;16;20;15;20;20;17;1;11,17;20;17;6;19;9;20;5;10;17;8;20;20;16,20;11;13;20";
 
-const $scriptletHostnames$ = /* 37 */ ["netq.me","mudah.my","doroni.me","kiryuu.id","dicrotin.*","igodesu.tv","indobo.com","kiryuu.org","kompas.com","lk21semi.*","nimegami.*","njavtv.com","sukasex.tv","tutwuri.id","anichin.top","moenime.com","sukasex.net","westmanga.*","5.253.86.213","animekompi.*","jenismac.com","kiryuu01.com","ainzscans.net","moutogami.com","moviekhhd.biz","3gpterbaru.com","animekompi.vip","info.vebma.com","sk21.sob4t.xyz","193.142.147.230","juraganfilm.ink","kimcilonly.site","komikcast02.com","jurnalistekno.id","bahasteknologi.com","thejakartapost.com","kisahterlarang.site"];
+const $scriptletHostnames$ = /* 38 */ ["netq.me","mudah.my","doroni.me","kiryuu.id","kuyhaa.me","dicrotin.*","igodesu.tv","indobo.com","kiryuu.org","kompas.com","lk21semi.*","nimegami.*","njavtv.com","sukasex.tv","tutwuri.id","anichin.top","moenime.com","sukasex.net","westmanga.*","5.253.86.213","animekompi.*","jenismac.com","kiryuu01.com","ainzscans.net","moutogami.com","moviekhhd.biz","3gpterbaru.com","animekompi.vip","info.vebma.com","sk21.sob4t.xyz","193.142.147.230","juraganfilm.ink","kimcilonly.site","komikcast02.com","jurnalistekno.id","bahasteknologi.com","thejakartapost.com","kisahterlarang.site"];
 
 const $scriptletFromRegexes$ = /* 0 */ [];
 

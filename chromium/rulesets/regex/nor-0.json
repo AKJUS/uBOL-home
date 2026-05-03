@@ -20,7 +20,7 @@
   "type": "block"
  },
  "condition": {
-  "regexFilter": "((https?|tcp):\\/\\/)?204\\.194\\.54\\.\\d{1,3}([:/].*)?$"
+  "regexFilter": "^((https?|tcp|udp|i?quic|s?ftp):\\/\\/)?204\\.194\\.54\\.\\d{1,3}([:/].*)?$"
  },
  "id": 2,
  "priority": 10

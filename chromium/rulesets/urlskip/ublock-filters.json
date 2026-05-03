@@ -235,6 +235,13 @@
   ]
  },
  {
+  "re": "^[^:]+://(?:[^/]+\\.)?meong\\.club/go/\\?ahr0c",
+  "steps": [
+   "/\\/go\\/\\?(aHR0c.+)/",
+   "-base64"
+  ]
+ },
+ {
   "re": "^[^:]+://(?:[^/]+\\.)?migmig\\.affilio\\.ir/api/v1/click(?:[^%.0-9a-z_-]|$)",
   "steps": [
    "?b64",
@@ -1264,7 +1271,7 @@
   ]
  },
  {
-  "re": "^[^:]+://(?:[^/]+\\.)?www\\.amazon\\..*?/gp/r\\.html\\?.*?&u=http",
+  "re": "^[^:]+://(?:[^/]+\\.)?www\\.amazon\\..*?/gp/.*?\\.html\\?.*?&u=http",
   "steps": [
    "?U"
   ]
@@ -1377,6 +1384,14 @@
   "re": "^[^:]+://(?:[^/]+\\.)?tracking\\.inflection\\.io/.*?/redirect\\?redirect=",
   "steps": [
    "?redirect"
+  ]
+ },
+ {
+  "re": "^[^:]+://(?:[^/]+\\.)?pornhub\\..*?/redirect/",
+  "steps": [
+   "/(https%253A%252F%252F[^?#]+)/",
+   "-uricomponent",
+   "-uricomponent"
   ]
  },
  {

@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 20 */[[25377,"html[lang] > body.ishome > div.adult + main.main"],[62925,".buttonautocl"],[47790,"html[lang] > body:not([class]):not([id]):not([style]) > div.background-container > div.container > div.captcha-box,\nbody > div[data-captcha-enable=\"true\"] > div.cleanslate[id^=\"google-captcha-\"] > div.captcha-box"],[35240,"html[lang] > body.startnew > div#sections > section#section_uname"],[47874,"html[lang] > body:not([style]) > div.captchaBody"],[5312,"html[lang] > body#body > * > div.cv-xwrapper > div.cvc > div.cv-inner"],[8320,"html[lang] > body#body > * > div.cvh.BlockClicksActivityBusy"],[15418,"html#html[sti][vic][lang] > body#allbody"],[58039,"html > body > div.container.m-p > #checkbox-window.checkbox-window,\nhtml > body > div.container > form#unsubscribe-form[onsubmit=\"submitUnsubscribeForm(event)\"]"],[27111,".fkrc-verifywin-window"],[32034,".fkrc-checkbox-window"],[40698,"html[lang] > body:not([class]):not([id]):not([style]) > div.container > div.recaptcha-box"],[27543,"body > .security-container[style=\"opacity: 1; transform: translateY(0px);\"]"],[59834,"html > body.hold-transition.theme-primary.bg-img[style^=\"background-image\"][style*=\"wallpaperaccess.com\"][style*=\"background-repeat\"][style*=\"background-size\"]"],[30528,"html > body > div.content > dl > dd.dd1 > div.min_sider > form#form1[action=\"unsubscribe.php\"]"],[56762,"html > body.body > div.container > div.content > form > table.optoutForm"],[31102,"html[data-scrapbook-source][data-scrapbook-create][data-scrapbook-title] > body.no-js > div.main-wrapper[role=\"main\"] > div.main-content"],[50662,".header-fix-tester-container"],[23774,"div.card > div#cbRow.checkbox-row[onclick=\"startVerify()\"]"],[16386,"body > div.captcha-container > div.captcha-card"]]);
+const highlyGeneric = /* 0 */"";
+const exceptions = /* 0 */[];
+const hostnames = /* 0 */[];
+const hasEntities = false;
 
-const genericSelectorMap = [[801,"html[lang] > body.ishome > div.adult + main.main"],[1485,".buttonautocl"],[2734,"html[lang] > body:not([class]):not([id]):not([style]) > div.background-container > div.container > div.captcha-box,\nbody > div[data-captcha-enable=\"true\"] > div.cleanslate[id^=\"google-captcha-\"] > div.captcha-box"],[2472,"html[lang] > body.startnew > div#sections > section#section_uname"],[2818,"html[lang] > body:not([style]) > div.captchaBody"],[1216,"html[lang] > body#body > * > div.cv-xwrapper > div.cvc > div.cv-inner"],[128,"html[lang] > body#body > * > div.cvh.BlockClicksActivityBusy"],[3130,"html#html[sti][vic][lang] > body#allbody"],[695,"html > body > div.container.m-p > #checkbox-window.checkbox-window,\nhtml > body > div.container > form#unsubscribe-form[onsubmit=\"submitUnsubscribeForm(event)\"]"],[2535,".fkrc-verifywin-window"],[3362,".fkrc-checkbox-window"],[3834,"html[lang] > body:not([class]):not([id]):not([style]) > div.container > div.recaptcha-box"],[2967,"body > .security-container[style=\"opacity: 1; transform: translateY(0px);\"]"],[2490,"html > body.hold-transition.theme-primary.bg-img[style^=\"background-image\"][style*=\"wallpaperaccess.com\"][style*=\"background-repeat\"][style*=\"background-size\"]"],[1856,"html > body > div.content > dl > dd.dd1 > div.min_sider > form#form1[action=\"unsubscribe.php\"]"],[3514,"html > body.body > div.container > div.content > form > table.optoutForm"],[2430,"html[data-scrapbook-source][data-scrapbook-create][data-scrapbook-title] > body.no-js > div.main-wrapper[role=\"main\"] > div.main-content"],[1510,".header-fix-tester-container"],[3294,"div.card > div#cbRow.checkbox-row[onclick=\"startVerify()\"]"],[2,"body > div.captcha-container > div.captcha-card"]];
-const genericExceptionSieve = undefined;
-const genericExceptionMap = undefined;
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 47 */[[23313,"#adBoven"],[6197,"#adRechts"],[40668,"#adRechts2"],[63801,"#advertentie"],[25608,".advertentie-2-container"],[26132,".advertentie_226"],[64048,".advertentie_links"],[47692,".content-rechts-ad"],[5835,".gamereel_featured-ad"],[9209,".gesponsord_blokje"],[30617,".gesponsord_blokje_wrap"],[4411,".hoofdAd2"],[34151,".kwebler-ad-minimal"],[17784,".massarius-dfp-unit"],[59421,".rmn-advert"],[21370,"#advertentieblokjeid"],[6577,"#gesponsordelink"],[26472,"#reclame2"],[21373,"#reclame_rechts"],[16102,"#reclamebanner"],[27349,"#reclamediv"],[50571,"#rightbanner_adbest"],[48173,"#semilo-lrectangle"],[17226,"#sidereclame"],[56999,"#vipAdmarktBannerBlock"],[50236,".ads-mobiel"],[685,".adstekst"],[32724,".advertentie"],[27667,".advertenties"],[50439,".advertorial_koersen_home_top"],[988,".ankeiler--advertisement"],[14400,".aw_url_admarkt_bottom"],[26913,".banner_advert6blok"],[26932,".banner_advertentie_footer"],[60274,".bericht_adv1"],[23345,".bovenadvertentiediv"],[21286,".category-advertentie"],[21596,".gesponsordelink"],[60664,".groei-ad"],[42802,".justLease_ad"],[20675,".mp-adsense-header-top"],[24281,".ontwerp_ads"],[47608,".reclame"],[42780,".reclameIndex"],[15262,".reclamekop"],[42807,".reclamelogos"],[16274,".sponsorbalk"]]);
+const highlyGeneric = /* 5 */"a[href^=\"https://go2.go2cloud.org/\"],\na[href^=\"https://mt67.net/\"],\na[href^=\"https://www.2k19.nl/\"],\na[href^=\"https://www.flirtadvertenties.nl/direct-sexdating/\"],\na[href^=\"https://xltube.nl/click/\"]";
+const exceptions = /* 40 */[".ad-content\n.ad-main\n.ad-container-wrapper\n.ad-header\n.ad-col\n.ad-row","#topbanner_ad",".advertentie",".ad-body\n.node-ad","#topbanner_ad",".googleAd",".top-ads-block",".header-ad",".ad-description",".advertorial","#advertentie",".top-ads-block",".AdBar",".top-ads-block",".AdBar",".top-advert",".advertentie",".b-header-banner",".top-ads-block",".top-ads-block",".advertentie","#topbanner_ad",".top-ads-block",".top-ads-block",".top-ads-block",".feed-ad\n.topAds",".top-ads-block",".top-ads-block",".top-ads-block",".ads-image",".top-ads-block",".top-ads-block","#topbanner_ad",".top-ads-block",".advert-container\n.advert-title\n.advertiser",".top-ads-block",".after-content-ad",".top-ads-block",".top-ads-block","#sponsorText"];
+const hostnames = /* 40 */["ad.cw","538.nl","fok.nl","bokt.nl","kijk.nl","vier.be","ajaxrss.nl","klusidee.nl","marktnet.nl","veeteelt.nl","forum.fok.nl","psvreport.nl","tweakers.net","ajaxreport.nl","hardware.info","directwonen.nl","paginamarkt.nl","underarmour.nl","casinoreport.nl","voetbalsnafu.nl","frontpage.fok.nl","vandaaginside.nl","voetbalvisie.com","fultimateteam.com","gamblingreport.nl","vakantieplaats.nl","cryptotoekomst.com","feyenoordreport.nl","formula1report.com","gratisaftehalen.nl","voetbalnotering.nl","cryptobelegging.com","hartvannederland.nl","livestreamvandaag.be","mechanisatiemarkt.nl","blockchainvandaag.com","modekoninginmaxima.nl","vergelijkbookmakers.nl","casinovergelijkingen.com","voetbalwedstrijdenvandaag.nl"];
+const hasEntities = false;
 
-const genericSelectorMap = [[2833,"#adBoven"],[2101,"#adRechts"],[3804,"#adRechts2"],[2361,"#advertentie"],[1032,".advertentie-2-container"],[1556,".advertentie_226"],[2608,".advertentie_links"],[2636,".content-rechts-ad"],[1739,".gamereel_featured-ad"],[1017,".gesponsord_blokje"],[1945,".gesponsord_blokje_wrap"],[315,".hoofdAd2"],[1383,".kwebler-ad-minimal"],[1400,".massarius-dfp-unit"],[2077,".rmn-advert"],[890,"#advertentieblokjeid"],[2481,"#gesponsordelink"],[1896,"#reclame2"],[893,"#reclame_rechts"],[3814,"#reclamebanner"],[2773,"#reclamediv"],[1419,"#rightbanner_adbest"],[3117,"#semilo-lrectangle"],[842,"#sidereclame"],[3751,"#vipAdmarktBannerBlock"],[1084,".ads-mobiel"],[685,".adstekst"],[4052,".advertentie"],[3091,".advertenties"],[1287,".advertorial_koersen_home_top"],[988,".ankeiler--advertisement"],[2112,".aw_url_admarkt_bottom"],[2337,".banner_advert6blok"],[2356,".banner_advertentie_footer"],[2930,".bericht_adv1"],[2865,".bovenadvertentiediv"],[806,".category-advertentie"],[1116,".gesponsordelink"],[3320,".groei-ad"],[1842,".justLease_ad"],[195,".mp-adsense-header-top"],[3801,".ontwerp_ads"],[2552,".reclame"],[1820,".reclameIndex"],[2974,".reclamekop"],[1847,".reclamelogos"],[3986,".sponsorbalk"]];
-const genericExceptionSieve = [2289,3256,641,2991,4052,1645,2154,2628,3747,193,819,2885,3797,2207,2361,2807,1514,356,1917,1386,3531,2136,1792,3786,472,3711,162];
-const genericExceptionMap = [["bokt.nl",".ad-body\n.node-ad"],["gratisaftehalen.nl",".ads-image"],["mechanisatiemarkt.nl",".advert-container\n.advert-title\n.advertiser"],["fok.nl",".advertentie"],["paginamarkt.nl",".advertentie"],["frontpage.fok.nl",".advertentie"],["veeteelt.nl",".advertorial"],["modekoninginmaxima.nl",".after-content-ad"],["vakantieplaats.nl",".feed-ad\n.topAds"],["ajaxreport.nl",".top-ads-block"],["ajaxrss.nl",".top-ads-block"],["blockchainvandaag.com",".top-ads-block"],["casinoreport.nl",".top-ads-block"],["casinovergelijkingen.com",".top-ads-block"],["cryptobelegging.com",".top-ads-block"],["cryptotoekomst.com",".top-ads-block"],["feyenoordreport.nl",".top-ads-block"],["formula1report.com",".top-ads-block"],["fultimateteam.com",".top-ads-block"],["gamblingreport.nl",".top-ads-block"],["livestreamvandaag.be",".top-ads-block"],["psvreport.nl",".top-ads-block"],["vergelijkbookmakers.nl",".top-ads-block"],["voetbalnotering.nl",".top-ads-block"],["voetbalsnafu.nl",".top-ads-block"],["voetbalvisie.com",".top-ads-block"],["directwonen.nl",".top-advert"],["hardware.info",".AdBar"],["tweakers.net",".AdBar"],["forum.fok.nl","#advertentie"],["vandaaginside.nl","#topbanner_ad"],["538.nl","#topbanner_ad"],["hartvannederland.nl","#topbanner_ad"],["kijk.nl","#topbanner_ad"],["vier.be",".googleAd"],["voetbalwedstrijdenvandaag.nl","#sponsorText"],["ad.cw",".ad-content\n.ad-main\n.ad-container-wrapper\n.ad-header\n.ad-col\n.ad-row"],["marktnet.nl",".ad-description"],["underarmour.nl",".b-header-banner"],["klusidee.nl",".header-ad"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

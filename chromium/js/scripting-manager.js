@@ -83,70 +83,6 @@ async function resetCSSCache() {
 
 /******************************************************************************/
 
-function registerHighGeneric(context, genericDetails) {
-    const { filteringModeDetails, rulesetsDetails } = context;
-
-    const excludeHostnames = [];
-    const includeHostnames = [];
-    const css = [];
-    for ( const details of rulesetsDetails ) {
-        const hostnames = genericDetails.get(details.id);
-        if ( hostnames ) {
-            if ( hostnames.unhide ) {
-                excludeHostnames.push(...hostnames.unhide);
-            }
-            if ( hostnames.hide ) {
-                includeHostnames.push(...hostnames.hide);
-            }
-        }
-        const count = details.css?.generichigh || 0;
-        if ( count === 0 ) { continue; }
-        css.push(`/rulesets/scripting/generichigh/${details.id}.css`);
-    }
-
-    if ( css.length === 0 ) { return; }
-
-    const { none, basic, optimal, complete } = filteringModeDetails;
-    const matches = [];
-    const excludeMatches = [];
-    if ( complete.has('all-urls') ) {
-        excludeMatches.push(...ut.matchesFromHostnames(none));
-        excludeMatches.push(...ut.matchesFromHostnames(basic));
-        excludeMatches.push(...ut.matchesFromHostnames(optimal));
-        excludeMatches.push(...ut.matchesFromHostnames(excludeHostnames));
-        matches.push('<all_urls>');
-    } else {
-        matches.push(
-            ...ut.matchesFromHostnames(
-                ut.subtractHostnameIters(
-                    Array.from(complete),
-                    excludeHostnames
-                )
-            )
-        );
-    }
-    if ( matches.length === 0 ) { return; }
-
-    // https://github.com/w3c/webextensions/issues/414#issuecomment-1623992885
-    // Once supported, add:
-    // cssOrigin: 'USER',
-    const directive = {
-        id: 'css-generichigh',
-        css,
-        matches,
-        allFrames: true,
-        runAt: 'document_end',
-    };
-    if ( excludeMatches.length !== 0 ) {
-        directive.excludeMatches = excludeMatches;
-    }
-
-    // register
-    context.toAdd.push(directive);
-}
-
-/******************************************************************************/
-
 function registerGeneric(context, genericDetails) {
     const { filteringModeDetails, rulesetsDetails } = context;
 
@@ -401,7 +337,6 @@ registerInjectables.register = async function register() {
         registerCosmetic('specific', context),
         registerCosmetic('procedural', context),
         registerGeneric(context, genericDetails),
-        registerHighGeneric(context, genericDetails),
         registerCustomFilters(context),
         registerCustomScriptlets(context),
         registerPreventPopup(context),

@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 20 */[[13066,".fold_home__pasica_banner:not(html, body, :empty)"],[50251,"#googleglava"],[64124,"#googledesnovertikalna"],[22373,"#googleispodteksta"],[44705,"#googledolje"],[35991,".reklama-na-indexu:not(html, body, :empty)"],[63980,".homepage-top-google-banner:not(html, body, :empty)"],[28089,".js-gpt-ad:not(html, body, :empty)"],[2898,".banner-izdvojeno:not(html, body, :empty)"],[23131,".elementor-widget-smartmag-codes:not(html, body, :empty)"],[41625,".banner__placeholder:not(html, body, :empty)"],[866,".cxenseignore:not(html, body, :empty, [id])"],[2177,"div.lesnina_widget"],[30141,".td-a-ad:not(html, body, :empty)"],[65241,".adaplace:not(html, body, :empty)"],[54337,".gpt-ad-banner:not(html, body, :empty)"],[17729,".ad-loading-placeholder:not(html, body, :empty)"],[31475,".gddanas:not(html, body, :empty)"],[62557,".article-block__banner:not(html, body, :empty)"],[51150,"div#box-over-content-revive"]]);
+const highlyGeneric = /* 1 */"div[data-ocm-ad]";
+const exceptions = /* 1 */[".iAdserver"];
+const hostnames = /* 1 */["radiosarajevo.ba"];
+const hasEntities = false;
 
-const genericSelectorMap = [[778,".fold_home__pasica_banner:not(html, body, :empty)"],[1099,"#googleglava"],[2684,"#googledesnovertikalna"],[1893,"#googleispodteksta"],[3745,"#googledolje"],[3223,".reklama-na-indexu:not(html, body, :empty)"],[2540,".homepage-top-google-banner:not(html, body, :empty)"],[3513,".js-gpt-ad:not(html, body, :empty)"],[2898,".banner-izdvojeno:not(html, body, :empty)"],[2651,".elementor-widget-smartmag-codes:not(html, body, :empty)"],[665,".banner__placeholder:not(html, body, :empty)"],[866,".cxenseignore:not(html, body, :empty, [id])"],[2177,"div.lesnina_widget"],[1469,".td-a-ad:not(html, body, :empty)"],[3801,".adaplace:not(html, body, :empty)"],[1089,".gpt-ad-banner:not(html, body, :empty)"],[1345,".ad-loading-placeholder:not(html, body, :empty)"],[2803,".gddanas:not(html, body, :empty)"],[1117,".article-block__banner:not(html, body, :empty)"],[1998,"div#box-over-content-revive"]];
-const genericExceptionSieve = [3819];
-const genericExceptionMap = [["radiosarajevo.ba",".iAdserver"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

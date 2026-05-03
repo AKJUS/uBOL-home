@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 3 */[[21195,".adsbox"],[16879,"DIV.agores300"],[39349,"TABLE.advright"]]);
+const highlyGeneric = /* 5 */"A[href*=\"adman.otenet.gr/click?\"],\nA[href*=\"http://affiliates.stanjamesaffiliates.com/\"],\nA[href*=\"http://axiabanners.exodus.gr/\"],\nA[href*=\"http://interactive.forthnet.gr/click?\"],\nA[href*=\"serve.williamhill.com/\"]";
+const exceptions = /* 3 */[".pub_300x250\n.pub_728x90\n.text-ad\n.textAd\n.text_ad",".adResult",".ad_wrapper"];
+const hostnames = /* 3 */["ediva.gr","aggeliestanea.gr","athensmagazine.gr"];
+const hasEntities = false;
 
-const genericSelectorMap = [[715,".adsbox"],[495,"DIV.agores300"],[2485,"TABLE.advright"]];
-const genericExceptionSieve = [2826,605,1174,1664,3836,2992,974];
-const genericExceptionMap = [["aggeliestanea.gr",".adResult"],["athensmagazine.gr",".ad_wrapper"],["ediva.gr",".pub_300x250\n.pub_728x90\n.text-ad\n.textAd\n.text_ad"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

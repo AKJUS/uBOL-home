@@ -454,6 +454,8 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||vg.no/vgc/cdn/vgno/assets/feature/_astro/gifthelperpymframe."},"id":453,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||openx.gamereactor.dk/adclick.php"},"id":454,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","urlFilter":"||travian.dk/?uc="},"id":455,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["itavisen.no"],"requestDomains":["html-load.com","taboola.com"]},"id":456,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["itavisen.no"],"resourceTypes":["image","stylesheet"],"urlFilter":".com/feed/"},"id":457,"priority":10},
 {"action":{"type":"block"},"condition":{"resourceTypes":["xmlhttprequest"],"urlFilter":"://aj2*.bid^"},"id":475,"priority":10},
 {"action":{"type":"block"},"condition":{"excludedInitiatorDomains":["dk","no","se"],"resourceTypes":["main_frame"],"urlFilter":"||minklarna."},"id":515,"priority":10},
 {"action":{"type":"block"},"condition":{"initiatorDomains":["discoveryplus.com"],"requestDomains":["akamaihd.net","dnitv.com"],"resourceTypes":["media"]},"id":522,"priority":10},

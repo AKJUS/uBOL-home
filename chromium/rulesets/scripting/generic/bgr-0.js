@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 7 */[[33561,"#ea_intext_div"],[62501,"td#freenet_table_ads"],[7167,".lapni-pop-over"],[16796,"#xenium_hot_offers"],[9208,"#banner_ad"],[34288,"#adbody"],[51615,"#newAd,\n#newAd"]]);
+const highlyGeneric = /* 0 */"";
+const exceptions = /* 4 */["#newAd","#newAd","#banner_ad","#adbody"];
+const hostnames = /* 4 */["olx.bg","prodavalnik.com","bg-ikonomika.com","noshtuvki.burkan.info"];
+const hasEntities = false;
 
-const genericSelectorMap = [[793,"#ea_intext_div"],[1061,"td#freenet_table_ads"],[3071,".lapni-pop-over"],[412,"#xenium_hot_offers"],[1016,"#banner_ad"],[1520,"#adbody"],[2463,"#newAd,\n#newAd"]];
-const genericExceptionSieve = [1016,1520,2463];
-const genericExceptionMap = [["bg-ikonomika.com","#banner_ad"],["noshtuvki.burkan.info","#adbody"],["olx.bg","#newAd"],["prodavalnik.com","#newAd"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

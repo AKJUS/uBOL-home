@@ -460,6 +460,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||ibarakinews.jp/attach_image/qji.png"},"id":459,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||gpc-check.com/img/pr/"},"id":460,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||d20aeo683mqd6t.cloudfront.net/*/banner/becos/becos-tj-banner"},"id":461,"priority":10},
+{"action":{"type":"block"},"condition":{"resourceTypes":["xmlhttprequest"],"urlFilter":"/api/v1/verify/fingerprint|"},"id":462,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||bigboss-financial.com/pr/banner/bn_300_250_"},"id":463,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||hime-book.net/wp-content/uploads/*/baner2"},"id":464,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||wp.com/image.pia.jp/uploads5/files/*/300_250.jpg"},"id":465,"priority":10},

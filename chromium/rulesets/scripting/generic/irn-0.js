@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 17 */[[39148,".zxc,\n.zxc"],[31818,".zxc-m"],[56783,".zxc-stik"],[17047,".zxc_home"],[12311,".zxc_news"],[15011,".zxc_left"],[1038,".zxc_matni"],[52734,".zxc-mobile"],[32032,".zxc-header-zxc"],[32468,".zxc-visible-fixed"],[29270,".zxc-padding-custom,\n.zxc-padding-custom"],[60033,".main-zxc"],[49509,".home-zxc"],[39324,".top_zxc"],[15708,".zxc_top"],[53269,".side_txt_zxc"],[54363,"#kaprila_linktable"]]);
+const highlyGeneric = /* 2 */"a[href^=\"https://arongroups.site/\"],\na[href^=\"https://arongroups.co/\"]";
+const exceptions = /* 26 */[".adv_title",".herald-ad",".ad__header",".advert-image\n.block-advert\n.advert-wrap",".ads-content",".ads_2",".square-ad",".page-ads",".ad-custom-size\n.ad-cat",".adBox",".boxads",".footer__subscribe",".ads-text","a[href^=\"https://arongroups.site/\"]\na[href^=\"https://arongroups.co/\"]","#head728\n#ad728\n#ad640a",".ads-bottom",".ads-top",".widget-ad",".ads-content\n.tz_ad300_widget",".ads-image","a[href^=\"https://arongroups.site/\"]\na[href^=\"https://arongroups.co/\"]",".adlink\n.adstext",".box_ads",".adstop",".navad",".logo-ad"];
+const hostnames = /* 26 */["ilna.ir","7ganj.ir","plaza.ir","ifixit.ir","cooldl.net","gamesib.ir","toranji.ir","gooyait.com","footofan.com","miniroid.com","nicmusic.net","ninisite.com","persianv.com","arongroups.co","elmefarda.com","estekhtam.com","gadgetnews.net","netnevesht.com","sakhtafzar.com","wikisemnan.com","arongroups.site","mybia4music.com","shahrebours.com","javan-musics.com","parsfootball.com","honarehzendegi.com"];
+const hasEntities = false;
 
-const genericSelectorMap = [[2284,".zxc,\n.zxc"],[3146,".zxc-m"],[3535,".zxc-stik"],[663,".zxc_home"],[23,".zxc_news"],[2723,".zxc_left"],[1038,".zxc_matni"],[3582,".zxc-mobile"],[3360,".zxc-header-zxc"],[3796,".zxc-visible-fixed"],[598,".zxc-padding-custom,\n.zxc-padding-custom"],[2689,".main-zxc"],[357,".home-zxc"],[2460,".top_zxc"],[3420,".zxc_top"],[21,".side_txt_zxc"],[1115,"#kaprila_linktable"]];
-const genericExceptionSieve = [4043,3665,3646,691,3183,3721,1622,3800,368,1710,1785,2698,3104,1985,719,2037,1621,1979,2701,98,2200,555,1414,2870,1335,3040,1301,2939,3962,3256];
-const genericExceptionMap = [["cooldl.net",".ads-content"],["sakhtafzar.com",".ads-content\n.tz_ad300_widget"],["elmefarda.com","#head728\n#ad728\n#ad640a"],["estekhtam.com",".ads-bottom"],["footofan.com",".ad-custom-size\n.ad-cat"],["7ganj.ir",".herald-ad"],["gamesib.ir",".ads_2"],["gooyait.com",".page-ads"],["gadgetnews.net",".ads-top"],["honarehzendegi.com",".logo-ad"],["ifixit.ir",".advert-image\n.block-advert\n.advert-wrap"],["ilna.ir",".adv_title"],["javan-musics.com",".adstop"],["miniroid.com",".adBox"],["mybia4music.com",".adlink\n.adstext"],["netnevesht.com",".widget-ad"],["nicmusic.net",".boxads"],["ninisite.com",".footer__subscribe"],["plaza.ir",".ad__header"],["parsfootball.com",".navad"],["persianv.com",".ads-text"],["shahrebours.com",".box_ads"],["toranji.ir",".square-ad"],["wikisemnan.com",".ads-image"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

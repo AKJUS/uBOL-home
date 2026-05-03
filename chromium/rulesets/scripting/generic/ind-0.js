@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 0 */undefined);
+const highlyGeneric = /* 0 */"";
+const exceptions = /* 7 */[".np-ads-wrapper\n.np-header-ads-area",".header-ads",".td-ad-m\n.td-ad-p\n.td-ad-tp",".np-ads-wrapper",".header-ads",".np-ads-wrapper\n.np-header-ads-area",".td-ad-m\n.td-ad-p\n.td-ad-tp"];
+const hostnames = /* 7 */["abnewslive.in","divyalive.com","dainikdawa.com","nepalimato.com","chirantannews.in","onlinejalandhar.com","dainikbharatbhaskar.com"];
+const hasEntities = false;
 
-const genericSelectorMap = undefined;
-const genericExceptionSieve = [1793,2445,1106,2417,2412,3415];
-const genericExceptionMap = [["chirantannews.in",".header-ads"],["divyalive.com",".header-ads"],["abnewslive.in",".np-ads-wrapper\n.np-header-ads-area"],["nepalimato.com",".np-ads-wrapper"],["onlinejalandhar.com",".np-ads-wrapper\n.np-header-ads-area"],["dainikbharatbhaskar.com",".td-ad-m\n.td-ad-p\n.td-ad-tp"],["dainikdawa.com",".td-ad-m\n.td-ad-p\n.td-ad-tp"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 1 */[[24270,"a#mobtop[title^=\"Рейтинг мобильных сайтов\"]"]]);
+const highlyGeneric = /* 24 */"[alt=\"Rambler's Top100\"],\n[title=\"uCoz Counter\"],\n[title=\"uWeb Counter\"],\na[href*=\"//top.mail.ru/jump?\"],\na[href*=\"/rating/\"] > img[width=\"88\"][height=\"31\"],\na[href*=\"rambler.ru/top100/\"],\na[href*=\"top100.rambler.ru/\"],\na[href=\"http://vtambove.ru/advert/banner_network/\"],\na[href^=\"http://click.hotlog.ru/\"],\na[href^=\"http://hitcounter.ru/top/stat.php\"],\na[href^=\"https://prime.rambler.ru/promo/\"],\na[title=\"TopTracker.Ru - Рейтинг трекеров.\"],\nimg[data-src=\"https://catalog.orbita.co.il/orbita.gif\"],\nimg[onclick*=\"clustrmaps.com/counter/\"],\nimg[src*=\"//counter.yadro.ru/\"],\nimg[src*=\"//i.i.ua/r/\"],\nimg[src*=\"://c.bigmir.net/\"],\nimg[src*=\"://r.i.ua/\"],\nimg[src*=\"cycounter\"][width=\"88\"][height=\"31\"],\nimg[src*=\"top.mail.ru/counter?\"],\nimg[src^=\"/stat/\"][width=\"88\"][height=\"31\"],\nimg[style*=\"//counter.yadro.ru/\"],\nimg[title=\"bigmir)net TOP 100\"],\na[href*=\"://metrika.yandex.ru/stat/\"]";
+const exceptions = /* 6 */["a[href*=\"://metrika.yandex.ru/stat/\"]","a[href*=\"://metrika.yandex.ru/stat/\"]","a[href*=\"rambler.ru/top100/\"]\na[href*=\"top100.rambler.ru/\"]","a[href=\"http://vtambove.ru/advert/banner_network/\"]",".adbanner",".ad_title"];
+const hostnames = /* 6 */["yandex.*","yandex.ru","rambler.ru","vtambove.ru","only-paper.*","inoreader.com"];
+const hasEntities = true;
 
-const genericSelectorMap = [[3790,"a#mobtop[title^=\"Рейтинг мобильных сайтов\"]"]];
-const genericExceptionSieve = [4092,1719];
-const genericExceptionMap = [["inoreader.com",".ad_title"],["only-paper.*",".adbanner"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

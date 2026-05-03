@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 56 */[[31080,".ad__main"],[17229,".adblokk"],[21654,".cikk_reklam"],[6820,".cikk-reklam"],[28308,".cikkreklam"],[13904,".google_hirdetes"],[39683,".google_hirdetesek"],[33250,".google-hirdetes"],[22833,".google-hirdetesek"],[60638,".googlehirdetes"],[55525,".googlehirdetesek"],[51592,".hirdetes_box"],[36812,".hirdetes_container,\n.hirdetes-container"],[58149,".hirdetes_doboz"],[55418,".hirdetes-box"],[49047,".hirdetes-doboz"],[15199,".hirdetes-linkek"],[55791,".hirdetesek_box"],[27219,".hirdetesek_container,\n.hirdetesek-container"],[29502,".hirdetesek_doboz"],[59485,".hirdetesek-box"],[46860,".hirdetesek-doboz"],[9293,".optimonk-container"],[45577,".optimonk-iframe-container"],[44700,".optimonk-middle"],[10487,".reklam-doboz"],[60830,".reklamok"],[40448,"#adblokk"],[44600,"#cemp_doboz"],[9252,"#cenmg"],[20667,"#cikk_reklam"],[58953,"#cikk-reklam"],[345,"#cikkreklam"],[59472,"#etarget"],[8125,"#google_hirdetes"],[44590,"#google_hirdetesek"],[60431,"#google-hirdetes"],[31708,"#google-hirdetesek"],[52115,"#googlehirdetes"],[37768,"#googlehirdetesek"],[60069,"#hirdetes_box"],[21921,"#hirdetes_container,\n#hirdetes-container"],[26728,"#hirdetes_doboz"],[50432,"#hirdetes_linkek"],[63639,"#hirdetes-box"],[9178,"#hirdetes-doboz"],[54962,"#hirdetes-linkek"],[9954,"#hirdetesek_box"],[29086,"#hirdetesek_container,\n#hirdetesek-container"],[9427,"#hirdetesek_doboz"],[7184,"#hirdetesek-box"],[18657,"#hirdetesek-doboz"],[29201,"#optimonk-iframe-container-campaign-12"],[11953,"#optimonk-overlay-campaign-12"],[7578,"#reklam-doboz"],[26483,"#reklamok"]]);
+const highlyGeneric = /* 14 */"[class*=\"GoogleAds\"],\n[data-campaign-name^=\"ads\"],\n[href*=\"ad.adverticum.net\"],\n[id*=\"google_ads\"],\n[id*=\"GoogleAds\"],\n[id^=\"ad_zone_\"],\n[id^=\"adocean\"],\n[id^=\"googlead\"],\n[name*=\"google_ads\"],\na[href*=\"ad.eval.hu\"],\na[href*=\"ad.netmedia.hu\"],\na[href*=\"adverticum.net\"],\na[href*=\"daserver.ultraweb.hu\"],\niframe[id*=\"ETARGET-\"]";
+const exceptions = /* 5 */[".adBanner",".ad-box:not(#ad-banner):not(:empty)",".heateor_sss_sharing_container",".adBanner","[href*=\"ad.adverticum.net\"]"];
+const hostnames = /* 5 */["videa.hu","media1.hu","greendex.hu","videaloop.hu","mindmegette.hu"];
+const hasEntities = false;
 
-const genericSelectorMap = [[2408,".ad__main"],[845,".adblokk"],[1174,".cikk_reklam"],[2724,".cikk-reklam"],[3732,".cikkreklam"],[1616,".google_hirdetes"],[2819,".google_hirdetesek"],[482,".google-hirdetes"],[2353,".google-hirdetesek"],[3294,".googlehirdetes"],[2277,".googlehirdetesek"],[2440,".hirdetes_box"],[4044,".hirdetes_container,\n.hirdetes-container"],[805,".hirdetes_doboz"],[2170,".hirdetes-box"],[3991,".hirdetes-doboz"],[2911,".hirdetes-linkek"],[2543,".hirdetesek_box"],[2643,".hirdetesek_container,\n.hirdetesek-container"],[830,".hirdetesek_doboz"],[2141,".hirdetesek-box"],[1804,".hirdetesek-doboz"],[1101,".optimonk-container"],[521,".optimonk-iframe-container"],[3740,".optimonk-middle"],[2295,".reklam-doboz"],[3486,".reklamok"],[3584,"#adblokk"],[3640,"#cemp_doboz"],[1060,"#cenmg"],[187,"#cikk_reklam"],[1609,"#cikk-reklam"],[345,"#cikkreklam"],[2128,"#etarget"],[4029,"#google_hirdetes"],[3630,"#google_hirdetesek"],[3087,"#google-hirdetes"],[3036,"#google-hirdetesek"],[2963,"#googlehirdetes"],[904,"#googlehirdetesek"],[2725,"#hirdetes_box"],[1441,"#hirdetes_container,\n#hirdetes-container"],[2152,"#hirdetes_doboz"],[1280,"#hirdetes_linkek"],[2199,"#hirdetes-box"],[986,"#hirdetes-doboz"],[1714,"#hirdetes-linkek"],[1762,"#hirdetesek_box"],[414,"#hirdetesek_container,\n#hirdetesek-container"],[1235,"#hirdetesek_doboz"],[3088,"#hirdetesek-box"],[2273,"#hirdetesek-doboz"],[529,"#optimonk-iframe-container-campaign-12"],[3761,"#optimonk-overlay-campaign-12"],[3482,"#reklam-doboz"],[1907,"#reklamok"]];
-const genericExceptionSieve = [2711,2773,199];
-const genericExceptionMap = [["videa.hu",".adBanner"],["videaloop.hu",".adBanner"],["media1.hu",".ad-box:not(#ad-banner):not(:empty)"],["greendex.hu",".heateor_sss_sharing_container"]];
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 

@@ -25,62 +25,16 @@
 // Isolate from global scope
 (function uBOL_cssGenericImport() {
 
-/******************************************************************************/
+const lowlyGeneric = new Map(/* 13 */[[47973,"#WACLauncher__Button"],[63696,"#popin-salescontact"],[40023,"#rasaWebchatPro"],[5431,"#seaspaceai-agent"],[62607,".b24-widget-button-wrapper"],[63938,".chat_hammerbot-iframe-wrapper__outer"],[57562,".drift-facade"],[62267,".intercom-launcher"],[64381,".intercom-lightweight-app"],[38969,".joinchat--chatbox"],[37423,".m-chat-toggler"],[25581,".sticky-button--whatsapp"],[28360,".wix-blog-hide-in-print.SITE_FOOTER_WRAPPER"]]);
+const highlyGeneric = /* 1 */"yardi-widget-craigslist";
+const exceptions = /* 0 */[];
+const hostnames = /* 0 */[];
+const hasEntities = false;
 
-const genericSelectorMap = [[2917,"#WACLauncher__Button"],[2256,"#popin-salescontact"],[3159,"#rasaWebchatPro"],[1335,"#seaspaceai-agent"],[1167,".b24-widget-button-wrapper"],[2498,".chat_hammerbot-iframe-wrapper__outer"],[218,".drift-facade"],[827,".intercom-launcher"],[2941,".intercom-lightweight-app"],[2105,".joinchat--chatbox"],[559,".m-chat-toggler"],[1005,".sticky-button--whatsapp"],[3784,".wix-blog-hide-in-print.SITE_FOOTER_WRAPPER"]];
-const genericExceptionSieve = undefined;
-const genericExceptionMap = undefined;
-
-if ( genericSelectorMap ) {
-    const map = self.genericSelectorMap =
-        self.genericSelectorMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericSelectorMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before},\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericSelectorMap = new Map(genericSelectorMap);
-    }
-    genericSelectorMap.length = 0;
-}
-
-if ( genericExceptionSieve ) {
-    const hashes = self.genericExceptionSieve =
-        self.genericExceptionSieve || new Set();
-    if ( hashes.size !== 0 ) {
-        for ( const hash of genericExceptionSieve ) {
-            hashes.add(hash);
-        }
-    } else {
-        self.genericExceptionSieve = new Set(genericExceptionSieve);
-    }
-    genericExceptionSieve.length = 0;
-}
-
-if ( genericExceptionMap ) {
-    const map = self.genericExceptionMap =
-        self.genericExceptionMap || new Map();
-    if ( map.size !== 0 ) {
-        for ( const entry of genericExceptionMap ) {
-            const before = map.get(entry[0]);
-            if ( before === undefined ) {
-                map.set(entry[0], entry[1]);
-            } else {
-                map.set(entry[0], `${before}\n${entry[1]}`);
-            }
-        }
-    } else {
-        self.genericExceptionMap = new Map(genericExceptionMap);
-    }
-    genericExceptionMap.length = 0;
-}
-
-/******************************************************************************/
+self.genericSelectorMaps = self.genericSelectorMaps ?? [];
+self.genericSelectorMaps.push(lowlyGeneric);
+self.genericDetails = self.genericDetails ?? [];
+self.genericDetails.push({ highlyGeneric, exceptions, hostnames, hasEntities });
 
 })();
 
