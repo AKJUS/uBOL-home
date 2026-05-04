@@ -1,3 +1,10 @@
+- [safari] [Fix regression in custom procedural cosmetic filters](https://github.com/gorhill/uBlock/commit/532f897ea8)
+- Updated filter lists
+
+----------
+
+### 2026.504.1635
+
 - [safari] [Fix cosmetic filtering when pages load from "Preload Top Hit"](https://github.com/gorhill/uBlock/commit/01ff17fe64)
 - Updated filter lists
 
