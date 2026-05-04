@@ -25,6 +25,7 @@ import {
     browser,
     localKeys, localRemove, localWrite,
     sessionKeys, sessionRead, sessionRemove, sessionWrite,
+    webextFlavor,
 } from './ext.js';
 import {
     isUserScriptsAvailable,
@@ -208,6 +209,9 @@ async function registerCosmetic(realm, context) {
     const realmid = `css-${realm}`;
     const js = rulesetIds.map(id => `/rulesets/scripting/${realm}/${id}.js`);
     js.unshift('/js/scripting/css-api.js', '/js/scripting/isolated-api.js');
+    if ( realm === 'procedural' && webextFlavor === 'safari' ) {
+        js.push('/js/scripting/css-procedural-api.js');
+    }
     js.push(`/js/scripting/${realmid}.js`);
 
     const excludeMatches = [];

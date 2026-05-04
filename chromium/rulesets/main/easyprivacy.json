@@ -5771,7 +5771,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||slashdot.org/country.js"},"id":5770,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||slashdot.org/images/js.gif"},"id":5771,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||slickdeals.net/ajax/stats/"},"id":5772,"priority":10},
-{"action":{"redirect":{"extensionPath":"/web_accessible_resources/noop.js"},"type":"redirect"},"condition":{"requestDomains":["acustomizedgift.com","inventorycache.com","ubiquitoussea.com"],"resourceTypes":["script"]},"id":5773,"priority":11},
+{"action":{"redirect":{"extensionPath":"/web_accessible_resources/noop.js"},"type":"redirect"},"condition":{"requestDomains":["acustomizedgift.com","inventorycache.com","kindhush.com","ubiquitoussea.com"],"resourceTypes":["script"]},"id":5773,"priority":11},
 {"action":{"type":"block"},"condition":{"urlFilter":"||smartlink-api.amuse.io/api/analytics/"},"id":5774,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||smassets.net/assets/anonweb/anonweb-click-"},"id":5775,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||smutty.com/ajax/trcking/"},"id":5776,"priority":10},
