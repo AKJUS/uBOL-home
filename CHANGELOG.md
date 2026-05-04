@@ -1,3 +1,9 @@
+- Updated filter lists
+
+----------
+
+### 2026.504.2301
+
 - [safari] [Fix regression in custom procedural cosmetic filters](https://github.com/gorhill/uBlock/commit/532f897ea8)
 - Updated filter lists
 
