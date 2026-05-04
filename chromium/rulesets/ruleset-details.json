@@ -32,8 +32,8 @@
   "enabled": true,
   "homeURL": "https://easylist.to/",
   "filters": {
-   "total": 66138,
-   "accepted": 66114,
+   "total": 66212,
+   "accepted": 66188,
    "rejected": 19
   },
   "rules": {
@@ -45,7 +45,7 @@
   },
   "css": {
    "generic": 12356,
-   "specific": 7928,
+   "specific": 7929,
    "procedural": 249
   },
   "popups": 3661
@@ -202,8 +202,8 @@
   "enabled": false,
   "homeURL": "https://someonewhocares.org/hosts/",
   "filters": {
-   "total": 12667,
-   "accepted": 12657,
+   "total": 12671,
+   "accepted": 12661,
    "rejected": 10
   },
   "rules": {
@@ -543,13 +543,13 @@
   "tags": "ads chinese 中文",
   "homeURL": "https://github.com/AdguardTeam/AdguardFilters#adguard-filters",
   "filters": {
-   "total": 15287,
-   "accepted": 15275,
+   "total": 15288,
+   "accepted": 15276,
    "rejected": 4
   },
   "rules": {
-   "total": 6620,
-   "plain": 6590,
+   "total": 6621,
+   "plain": 6591,
    "regex": 30,
    "strictblock": 4,
    "rejected": 0
@@ -713,7 +713,7 @@
   },
   "css": {
    "generic": 11,
-   "specific": 204,
+   "specific": 205,
    "procedural": 9
   }
  },
@@ -806,19 +806,19 @@
   "tags": "ads assamese bengali gujarati hindi kannada malayalam marathi nepali punjabi sinhala tamil telugu",
   "homeURL": "https://github.com/mediumkreation/IndianList",
   "filters": {
-   "total": 5144,
-   "accepted": 5144,
+   "total": 5148,
+   "accepted": 5148,
    "rejected": 0
   },
   "rules": {
-   "total": 5102,
-   "plain": 5102,
+   "total": 5106,
+   "plain": 5106,
    "regex": 0,
    "rejected": 0
   },
   "css": {
    "generic": 7,
-   "specific": 5731,
+   "specific": 5735,
    "procedural": 139
   },
   "popups": 2
@@ -1181,8 +1181,8 @@
   "tags": "ads belarusian беларуская kazakh tatar russian русский ukrainian українська uzbek uk",
   "homeURL": "https://forums.lanik.us/viewforum.php?f=102",
   "filters": {
-   "total": 18683,
-   "accepted": 18673,
+   "total": 18685,
+   "accepted": 18675,
    "rejected": 7
   },
   "rules": {

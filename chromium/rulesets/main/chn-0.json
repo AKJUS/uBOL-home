@@ -6461,6 +6461,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||kuazhi.com/kuazhi_click."},"id":6460,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||chachefa.com^*.js?v="},"id":6461,"priority":10},
 {"action":{"type":"block"},"condition":{"domainType":"thirdParty","resourceTypes":["script","xmlhttprequest"],"urlFilter":"fcenxe*.top/"},"id":6462,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||m.qishuba.com/jump/"},"id":6463,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||jjjxsw.com/js/common."},"id":6464,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||diyibanzhu*.com/js/html"},"id":6465,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||diyibanzhu*.com/js/cdn."},"id":6466,"priority":10},
