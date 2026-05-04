@@ -1,6 +1,14 @@
+- [safari] [Fix cosmetic filtering when pages load from "Preload Top Hit"](https://github.com/gorhill/uBlock/commit/01ff17fe64)
+- Updated filter lists
+
+----------
+
+### 2026.503.1521
+
 - [Fix support of CSS selectors with pseudo-elements in custom filters](https://github.com/gorhill/uBlock/commit/8e3c4c7f16)
 - [Add support for highly generic cosmetic filter exceptions](https://github.com/gorhill/uBlock/commit/e2df53d0de)
 - [Support copying/pasting custom filters](https://github.com/gorhill/uBlock/commit/11b749e0a3)
+- Updated filter lists
 
 ----------
 
