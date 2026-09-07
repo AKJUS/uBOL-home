@@ -245,15 +245,6 @@ function replaceNodeTextFn(
     const reExcludes = extraArgs.excludes
         ? safe.patternToRegex(extraArgs.excludes, 'ms')
         : null;
-    const stop = (takeRecord = true) => {
-        if ( takeRecord ) {
-            handleMutations(observer.takeRecords());
-        }
-        observer.disconnect();
-        if ( safe.logLevel > 1 ) {
-            safe.uboLog(logPrefix, 'Quitting');
-        }
-    };
     const textContentFactory = (( ) => {
         const out = { createScript: s => s };
         const { trustedTypes: tt } = self;
@@ -266,19 +257,19 @@ function replaceNodeTextFn(
         }
         return out;
     })();
-    let sedCount = extraArgs.sedCount || 0;
+    let sedCount = extraArgs.sedCount ?? Number.MAX_SAFE_INTEGER;
     const handleNode = node => {
         const before = node.textContent;
         if ( reIncludes ) {
             reIncludes.lastIndex = 0;
-            if ( safe.RegExp_test(reIncludes, before) === false ) { return true; }
+            if ( safe.RegExp_test(reIncludes, before) === false ) { return; }
         }
         if ( reExcludes ) {
             reExcludes.lastIndex = 0;
-            if ( safe.RegExp_test(reExcludes, before) ) { return true; }
+            if ( safe.RegExp_test(reExcludes, before) ) { return; }
         }
         rePattern.lastIndex = 0;
-        if ( safe.RegExp_test(rePattern, before) === false ) { return true; }
+        if ( safe.RegExp_test(rePattern, before) === false ) { return; }
         rePattern.lastIndex = 0;
         const after = pattern !== ''
             ? before.replace(rePattern, replacement)
@@ -290,44 +281,65 @@ function replaceNodeTextFn(
             safe.uboLog(logPrefix, `Text before:\n${before.trim()}`);
         }
         safe.uboLog(logPrefix, `Text after:\n${after.trim()}`);
-        return sedCount === 0 || (sedCount -= 1) !== 0;
+        sedCount -= 1;
+    };
+    const handleTree = root => {
+        const treeWalker = document.createTreeWalker(root,
+            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
+        );
+        const { currentScript } = document;
+        let count = 0;
+        for (;;) {
+            const node = treeWalker.nextNode();
+            if ( node === null ) { break; }
+            count += 1;
+            if ( node === currentScript ) { continue; }
+            if ( reNodeName.test(node.nodeName) ) {
+                handleNode(node);
+            } else if ( node.nodeName === 'TEMPLATE' ) {
+                count += handleTree(node.content);
+            } else {
+                continue;
+            }
+            if ( sedCount === 0 ) { break; }
+        }
+        return count;
+    };
+    if ( document.documentElement ) {
+        const count = handleTree(document.documentElement);
+        safe.uboLog(logPrefix, `${count} nodes present before installing mutation observer`);
+    }
+    const stay = Boolean(extraArgs.stay);
+    if ( sedCount === 0 && stay === false ) { return; }
+    const stop = (takeRecord = true) => {
+        const mutations = takeRecord ? observer.takeRecords() : [];
+        observer.disconnect();
+        handleMutations(mutations);
+        if ( safe.logLevel > 1 ) {
+            safe.uboLog(logPrefix, 'Quitting');
+        }
     };
     const handleMutations = mutations => {
         for ( const mutation of mutations ) {
             for ( const node of mutation.addedNodes ) {
-                if ( reNodeName.test(node.nodeName) === false ) { continue; }
-                if ( handleNode(node) ) { continue; }
-                stop(false); return;
+                if ( reNodeName.test(node.nodeName) ) {
+                    handleNode(node);
+                } else if ( node.nodeName === 'TEMPLATE' ) {
+                    handleTree(node.content);
+                } else {
+                    continue;
+                }
+                if ( sedCount === 0 ) { return stop(false); }
             }
         }
     };
     const observer = new MutationObserver(handleMutations);
     observer.observe(document, { childList: true, subtree: true });
-    if ( document.documentElement ) {
-        const treeWalker = document.createTreeWalker(
-            document.documentElement,
-            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
-        );
-        let count = 0;
-        for (;;) {
-            const node = treeWalker.nextNode();
-            count += 1;
-            if ( node === null ) { break; }
-            if ( reNodeName.test(node.nodeName) === false ) { continue; }
-            if ( node === document.currentScript ) { continue; }
-            if ( handleNode(node) ) { continue; }
-            stop(); break;
-        }
-        safe.uboLog(logPrefix, `${count} nodes present before installing mutation observer`);
-    }
-    if ( extraArgs.stay ) { return; }
+    if ( stay ) { return; }
     runAt(( ) => {
-        const quitAfter = extraArgs.quitAfter || 0;
-        if ( quitAfter !== 0 ) {
-            setTimeout(( ) => { stop(); }, quitAfter);
-        } else {
-            stop();
-        }
+        const quitAfter = extraArgs.quitAfter ?? 0;
+        if ( quitAfter === 0 ) { return stop(); }
+        setTimeout(( ) => { stop(); }, quitAfter);
     }, 'interactive');
 }
 
@@ -866,7 +878,7 @@ if ( entries.length === 0 ) { return; }
 const todo = new Set();
 
 if ( $hasHostnames$ ) {
-    const $scriptletHostnames$ = /* 12 */ ["maple.gg","loawa.com","ssodam.com","dcinside.com","m.danawa.com","oh-yes.co.kr","www.naver.com","m.dcinside.com","m.humoruniv.com","excellesports.com","gall.dcinside.com","mlbpark.donga.com"];
+    const $scriptletHostnames$ = /* 13 */ ["maple.gg","chuchu.gg","loawa.com","ssodam.com","dcinside.com","m.danawa.com","oh-yes.co.kr","www.naver.com","m.dcinside.com","m.humoruniv.com","excellesports.com","gall.dcinside.com","mlbpark.donga.com"];
     const collectArglistRefIndices = (out, hn, r) => {
         let l = 0, i = 0, d = 0;
         let candidate = '';
@@ -911,7 +923,7 @@ if ( $hasHostnames$ ) {
     }
     // Collect arglist references
     if ( todoIndices.size ) {
-        const $scriptletArglistRefs$ = /* 12 */ "5;2;8;10;3;7;6;11,12;1;4;13,14;9";
+        const $scriptletArglistRefs$ = /* 13 */ "6;2;3;9;11;4;8;7;12,13;1;5;14,15;10";
         const arglistRefs = $scriptletArglistRefs$.split(';');
         for ( const i of todoIndices ) {
             for ( const ref of JSON.parse(`[${arglistRefs[i]}]`) ) {
@@ -944,8 +956,8 @@ if ( $hasRegexes$ ) {
 if ( todo.size && todo.has(0) === false ) {
     const $scriptletFunctions$ = /* 6 */
 [removeNodeText,setCookie,removeClass,setAttr,removeCookie,setLocalStorageItem];
-    const $scriptletArgs$ = /* 23 */ ["script","/run[\\s\\S]*?data[\\s\\S]*?OnClick[\\s\\S]*?ad\\d_/","ad_popup_hide_36","1","hideMainBottomSheet","Y","popup_view","disable","hideFrontPagePopup","true","type_ad","#shortcutArea","ld_ac_timeout","adv","#cmtFormTable textarea","cols","50","gaejuki_ad","find_ab","/adblock_detected/","$remove$","/background:[\\s\\S]+setTimeout\\( *\\( *\\) *=> *[A-Za-z0-9]+\\.remove\\( *\\)[\\s\\S]+Math\\.random\\( *\\) *< *percent *\\/ *100/","/finally *{\\n* *document.documentElement.removeChild\\( *[A-Za-z0-9]+ *\\) *;\\n* *}([ \\n]|.)+_ad\"]\\);/"];
-    const $scriptletArglists$ = /* 15 */ ";0,0,1;1,2,3;1,4,5;1,6,7;1,8,9;2,10,11;1,12,5;1,13,3;3,14,15,16;4,17;4,18;5,19,20;0,0,21;0,0,22";
+    const $scriptletArgs$ = /* 24 */ ["script","/run[\\s\\S]*?data[\\s\\S]*?OnClick[\\s\\S]*?ad\\d_/","daily_ad_closed","true","ad_popup_hide_36","1","hideMainBottomSheet","Y","popup_view","disable","hideFrontPagePopup","type_ad","#shortcutArea","ld_ac_timeout","adv","#cmtFormTable textarea","cols","50","gaejuki_ad","find_ab","/adblock_detected/","$remove$","/background:[\\s\\S]+setTimeout\\( *\\( *\\) *=> *[A-Za-z0-9]+\\.remove\\( *\\)[\\s\\S]+Math\\.random\\( *\\) *< *percent *\\/ *100/","/finally *{\\n* *document.documentElement.removeChild\\( *[A-Za-z0-9]+ *\\) *;\\n* *}([ \\n]|.)+_ad\"]\\);/"];
+    const $scriptletArglists$ = /* 16 */ ";0,0,1;1,2,3;1,4,5;1,6,7;1,8,9;1,10,3;2,11,12;1,13,7;1,14,5;3,15,16,17;4,18;4,19;5,20,21;0,0,22;0,0,23";
     const arglists = $scriptletArglists$.split(';');
     const args = $scriptletArgs$;
     for ( const ref of todo ) {

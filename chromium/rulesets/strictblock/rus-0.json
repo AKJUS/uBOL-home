@@ -1104,10 +1104,6 @@
    "drontres.com",
    "drp.su",
    "drydrum.com",
-   "dsazfk.com",
-   "dteifi.com",
-   "dtxelz.com",
-   "dtyvtj.com",
    "dugtor-deer.pw",
    "dunta.ru",
    "dustydime.com",
@@ -2152,6 +2148,7 @@
    "lowkeypalmtree.com",
    "lp3tdqle.com",
    "lstay.com",
+   "lu-games.com",
    "lubov21.ru",
    "lucky-blogs.ru",
    "luckyade.ru",
@@ -2169,6 +2166,7 @@
    "lunarcave.com",
    "lunchroomlock.com",
    "luredac.com",
+   "lustgoddess.com",
    "lustroushaven.com",
    "lux-bn.com.ua",
    "luxcash.ru",
@@ -4333,7 +4331,7 @@
   "type": "redirect"
  },
  "condition": {
-  "regexFilter": "^[^:]+:\\/\\/([^:/]+\\.)?yandex\\.net[^%.0-9a-z_-].*?\\/weboffer\\/.*",
+  "regexFilter": "^.*\\/splash\\.php\\?.*?fastpic.*",
   "resourceTypes": [
    "main_frame"
   ]
@@ -4349,12 +4347,60 @@
   "type": "redirect"
  },
  "condition": {
-  "regexFilter": "^[^:]+:\\/\\/([^:/]+\\.)?e\\.radikal\\.host\\/.*?\\..*",
+  "regexFilter": "^.*\\/splash\\.php\\?.*?fhbvce1hz2lj.*",
   "resourceTypes": [
    "main_frame"
   ]
  },
  "id": 6,
+ "priority": 29
+},
+{
+ "action": {
+  "redirect": {
+   "regexSubstitution": "/strictblock.html#\\0"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "regexFilter": "^.*=.*?=.*?fastpic.*?%.*",
+  "resourceTypes": [
+   "main_frame"
+  ]
+ },
+ "id": 7,
+ "priority": 29
+},
+{
+ "action": {
+  "redirect": {
+   "regexSubstitution": "/strictblock.html#\\0"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "regexFilter": "^[^:]+:\\/\\/([^:/]+\\.)?yandex\\.net[^%.0-9a-z_-].*?\\/weboffer\\/.*",
+  "resourceTypes": [
+   "main_frame"
+  ]
+ },
+ "id": 8,
+ "priority": 29
+},
+{
+ "action": {
+  "redirect": {
+   "regexSubstitution": "/strictblock.html#\\0"
+  },
+  "type": "redirect"
+ },
+ "condition": {
+  "regexFilter": "^[^:]+:\\/\\/([^:/]+\\.)?e\\.radikal\\.host\\/.*?\\..*",
+  "resourceTypes": [
+   "main_frame"
+  ]
+ },
+ "id": 9,
  "priority": 29
 }
 ]

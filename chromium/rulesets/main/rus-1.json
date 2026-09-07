@@ -1062,5 +1062,16 @@
 {"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["cdwuid_attempt"]}}},"type":"redirect"},"condition":{"requestDomains":["t-j.ru"],"resourceTypes":["main_frame"],"urlFilter":"^cdwuid_attempt="},"id":1061},
 {"action":{"type":"block"},"condition":{"urlFilter":"||rnti.online/api/tracking/"},"id":1062,"priority":10},
 {"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["geoblock"]}}},"type":"redirect"},"condition":{"resourceTypes":["sub_frame"],"urlFilter":"||ashdi.vip/*geoblock="},"id":1063},
-{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["block"]}}},"type":"redirect"},"condition":{"resourceTypes":["sub_frame"],"urlFilter":"||online-serial.com/*block="},"id":1064}
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["block"]}}},"type":"redirect"},"condition":{"resourceTypes":["sub_frame"],"urlFilter":"||online-serial.com/*block="},"id":1064},
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["af_dp"]}}},"type":"redirect"},"condition":{"initiatorDomains":["ozon.ru"],"resourceTypes":["image","sub_frame","xmlhttprequest"],"urlFilter":"^af_dp="},"id":1065},
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["pid"]}}},"type":"redirect"},"condition":{"initiatorDomains":["ozon.ru"],"resourceTypes":["image","sub_frame","xmlhttprequest"],"urlFilter":"^pid="},"id":1066},
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["source_caller"]}}},"type":"redirect"},"condition":{"initiatorDomains":["ozon.ru"],"resourceTypes":["image","sub_frame","xmlhttprequest"],"urlFilter":"^source_caller="},"id":1067},
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["af_dp"]}}},"type":"redirect"},"condition":{"requestDomains":["ozon.ru"],"resourceTypes":["main_frame"],"urlFilter":"^af_dp="},"id":1068},
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["pid"]}}},"type":"redirect"},"condition":{"requestDomains":["ozon.ru"],"resourceTypes":["main_frame"],"urlFilter":"^pid="},"id":1069},
+{"action":{"redirect":{"transform":{"queryTransform":{"removeParams":["source_caller"]}}},"type":"redirect"},"condition":{"requestDomains":["ozon.ru"],"resourceTypes":["main_frame"],"urlFilter":"^source_caller="},"id":1070},
+{"action":{"type":"block"},"condition":{"urlFilter":"||avito.ru/clickstream/"},"id":1071,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||mon.avito.ru/"},"id":1072,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||ozon.ru/p-api/tracker/"},"id":1073,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||st.ozone.ru/*/client-metrics/"},"id":1074,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||stats.avito.ru/"},"id":1075,"priority":10}
 ]

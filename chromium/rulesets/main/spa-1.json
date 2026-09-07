@@ -919,5 +919,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||nexustoons.com/api/settings/ads"},"id":918,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||nexustoons.com/api/ads"},"id":919,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||olympusxyz.com/ad-*.js"},"id":920,"priority":10},
-{"action":{"redirect":{"extensionPath":"/web_accessible_resources/noop.txt"},"type":"redirect"},"condition":{"initiatorDomains":["hardwarepremium.com"],"resourceTypes":["image","media","other","script","stylesheet","sub_frame","xmlhttprequest"],"urlFilter":"||googleads.g.doubleclick.net/pagead/id"},"id":921,"priority":11}
+{"action":{"redirect":{"extensionPath":"/web_accessible_resources/noop.txt"},"type":"redirect"},"condition":{"initiatorDomains":["hardwarepremium.com"],"resourceTypes":["image","media","other","script","stylesheet","sub_frame","xmlhttprequest"],"urlFilter":"||googleads.g.doubleclick.net/pagead/id"},"id":921,"priority":11},
+{"action":{"type":"block"},"condition":{"urlFilter":"||s.zst.com.br/prod/brickz^"},"id":922,"priority":10},
+{"action":{"type":"block"},"condition":{"urlFilter":"||embed69.org/bw.xml"},"id":923,"priority":10}
 ]

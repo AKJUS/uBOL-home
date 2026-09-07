@@ -118,7 +118,7 @@
 {"action":{"type":"block"},"condition":{"urlFilter":"||thejewishstar.com/images/enews-ad.png"},"id":117,"priority":10},
 {"action":{"type":"block"},"condition":{"initiatorDomains":["denverite.com"],"urlFilter":"||widgets.cpr.org/embeds/"},"id":118,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||waterfordwhispersnews.com/wp-content/themes/therex-child/js/_newsletter-article-signup.js"},"id":119,"priority":10},
-{"action":{"type":"block"},"condition":{"initiatorDomains":["premierchristian.news"],"requestDomains":["form.jotform.com"]},"id":120,"priority":10},
+{"action":{"type":"block"},"condition":{"initiatorDomains":["discoverwildlife.com","premierchristian.news"],"requestDomains":["jotform.com"]},"id":120,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||ibspot.com/klaviyo_form"},"id":121,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||dagelijksestandaard.nl^*/ddsnieuwsbrief.jpg"},"id":122,"priority":10},
 {"action":{"type":"block"},"condition":{"urlFilter":"||quechoisir.org/push/"},"id":123,"priority":10},

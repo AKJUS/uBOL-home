@@ -16,6 +16,7 @@
  "condition": {
   "domainType": "thirdParty",
   "requestDomains": [
+   "alhena.ai",
    "askmiso.com",
    "cdn.gist.ai",
    "gotolstoy.com",

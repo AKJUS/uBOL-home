@@ -203,6 +203,27 @@ function onIdleFn(fn, options) {
     return self.requestAnimationFrame(fn);
 }
 
+function preventNavigation(
+    pattern = ''
+) {
+    const safe = safeSelf();
+    const logPrefix = safe.makeLogPrefix('prevent-navigation', pattern);
+    const needle = pattern === 'location.href' ? self.location.href : pattern;
+    const matcher = safe.initPattern(needle, { canNegate: true });
+    self.navigation.addEventListener('navigate', ev => {
+        if ( ev.userInitiated ) { return; }
+        const { url } = ev.destination;
+        if ( pattern === '' ) {
+            safe.uboLog(logPrefix, `Navigation to ${url}`);
+            return;
+        }
+        if ( safe.testPattern(matcher, url) ) {
+            ev.preventDefault();
+            safe.uboLog(logPrefix, `Prevented navigation to ${url}`);
+        }
+    });
+}
+
 function removeClass(
     rawToken = '',
     rawSelector = '',
@@ -364,15 +385,6 @@ function replaceNodeTextFn(
     const reExcludes = extraArgs.excludes
         ? safe.patternToRegex(extraArgs.excludes, 'ms')
         : null;
-    const stop = (takeRecord = true) => {
-        if ( takeRecord ) {
-            handleMutations(observer.takeRecords());
-        }
-        observer.disconnect();
-        if ( safe.logLevel > 1 ) {
-            safe.uboLog(logPrefix, 'Quitting');
-        }
-    };
     const textContentFactory = (( ) => {
         const out = { createScript: s => s };
         const { trustedTypes: tt } = self;
@@ -385,19 +397,19 @@ function replaceNodeTextFn(
         }
         return out;
     })();
-    let sedCount = extraArgs.sedCount || 0;
+    let sedCount = extraArgs.sedCount ?? Number.MAX_SAFE_INTEGER;
     const handleNode = node => {
         const before = node.textContent;
         if ( reIncludes ) {
             reIncludes.lastIndex = 0;
-            if ( safe.RegExp_test(reIncludes, before) === false ) { return true; }
+            if ( safe.RegExp_test(reIncludes, before) === false ) { return; }
         }
         if ( reExcludes ) {
             reExcludes.lastIndex = 0;
-            if ( safe.RegExp_test(reExcludes, before) ) { return true; }
+            if ( safe.RegExp_test(reExcludes, before) ) { return; }
         }
         rePattern.lastIndex = 0;
-        if ( safe.RegExp_test(rePattern, before) === false ) { return true; }
+        if ( safe.RegExp_test(rePattern, before) === false ) { return; }
         rePattern.lastIndex = 0;
         const after = pattern !== ''
             ? before.replace(rePattern, replacement)
@@ -409,44 +421,65 @@ function replaceNodeTextFn(
             safe.uboLog(logPrefix, `Text before:\n${before.trim()}`);
         }
         safe.uboLog(logPrefix, `Text after:\n${after.trim()}`);
-        return sedCount === 0 || (sedCount -= 1) !== 0;
+        sedCount -= 1;
+    };
+    const handleTree = root => {
+        const treeWalker = document.createTreeWalker(root,
+            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
+        );
+        const { currentScript } = document;
+        let count = 0;
+        for (;;) {
+            const node = treeWalker.nextNode();
+            if ( node === null ) { break; }
+            count += 1;
+            if ( node === currentScript ) { continue; }
+            if ( reNodeName.test(node.nodeName) ) {
+                handleNode(node);
+            } else if ( node.nodeName === 'TEMPLATE' ) {
+                count += handleTree(node.content);
+            } else {
+                continue;
+            }
+            if ( sedCount === 0 ) { break; }
+        }
+        return count;
+    };
+    if ( document.documentElement ) {
+        const count = handleTree(document.documentElement);
+        safe.uboLog(logPrefix, `${count} nodes present before installing mutation observer`);
+    }
+    const stay = Boolean(extraArgs.stay);
+    if ( sedCount === 0 && stay === false ) { return; }
+    const stop = (takeRecord = true) => {
+        const mutations = takeRecord ? observer.takeRecords() : [];
+        observer.disconnect();
+        handleMutations(mutations);
+        if ( safe.logLevel > 1 ) {
+            safe.uboLog(logPrefix, 'Quitting');
+        }
     };
     const handleMutations = mutations => {
         for ( const mutation of mutations ) {
             for ( const node of mutation.addedNodes ) {
-                if ( reNodeName.test(node.nodeName) === false ) { continue; }
-                if ( handleNode(node) ) { continue; }
-                stop(false); return;
+                if ( reNodeName.test(node.nodeName) ) {
+                    handleNode(node);
+                } else if ( node.nodeName === 'TEMPLATE' ) {
+                    handleTree(node.content);
+                } else {
+                    continue;
+                }
+                if ( sedCount === 0 ) { return stop(false); }
             }
         }
     };
     const observer = new MutationObserver(handleMutations);
     observer.observe(document, { childList: true, subtree: true });
-    if ( document.documentElement ) {
-        const treeWalker = document.createTreeWalker(
-            document.documentElement,
-            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
-        );
-        let count = 0;
-        for (;;) {
-            const node = treeWalker.nextNode();
-            count += 1;
-            if ( node === null ) { break; }
-            if ( reNodeName.test(node.nodeName) === false ) { continue; }
-            if ( node === document.currentScript ) { continue; }
-            if ( handleNode(node) ) { continue; }
-            stop(); break;
-        }
-        safe.uboLog(logPrefix, `${count} nodes present before installing mutation observer`);
-    }
-    if ( extraArgs.stay ) { return; }
+    if ( stay ) { return; }
     runAt(( ) => {
-        const quitAfter = extraArgs.quitAfter || 0;
-        if ( quitAfter !== 0 ) {
-            setTimeout(( ) => { stop(); }, quitAfter);
-        } else {
-            stop();
-        }
+        const quitAfter = extraArgs.quitAfter ?? 0;
+        if ( quitAfter === 0 ) { return stop(); }
+        setTimeout(( ) => { stop(); }, quitAfter);
     }, 'interactive');
 }
 
@@ -1123,7 +1156,7 @@ if ( $hasHostnames$ ) {
     }
     // Collect arglist references
     if ( todoIndices.size ) {
-        const $scriptletArglistRefs$ = /* 299 */ "132;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;130;91;130;62;101;85;130;132;2,99;132;130;16,32,67,100,102;10,124;14,15;46,113;130;130;130;130;130;16,67,100,102;130;68,72;10,124;93;58;11,96;130;121;130;62;93;2;131;130;132;130;83;103;130;132;93;25,111;0;106;132;2,76,86;93;82,132;132;93;130;130;130;130;130;45;113;107;4;75;132;3;8,18,31,34,38,-122,122,123;132;57;93;132;59;112;23,48,63,111,133;130;132;92;130;125,126;48,63,111,133;107;25,33,53;35;130;36;0;54,64;132;23;22,24;1;132;132;132;71;108,109;69,70,111;12;62;132;132;93;93;125,126;120,-122;77;81;81;47;0;17;17;93;20,30;74;49;26;111;132;132;-122;127;10;125,126;55;-122;80;79;132;44;114,115,116,117;132;132;62;26;132;125,126;-122;93;81;125,126;37;2;90;23;61;0;130;-122;127;132;40;55;-122;-122;125,126;125,126;-122;79;88;97;48,63,111,133;93;-122;-122;93;6;-122;-122;-122;41;42;94,111;108,109;-122;56;132;-122;132;132;48,63,133;48,63,133;48,63,133;93;5;125,126;50;130;29;28,65;-122;-122;93;-122;110;-122;79;132;-122;74;12;25,27;118,119;132;43;-122;128,129;89,98;132;52;9;-122;55;132;132;93;108,109;110;132;132;84;-122;51,132;21;127;1;8,18,31,34,38;1;66;-122;13;132;-122;0;22;78;2;-122;125,126;-122;-122;60;127;19;39;87;8,18,31,34,38;132;-115,-116,-117,-118;73;48,63,111,133;108,109;130;2;-122;130;-122;130;132;132;132;-122;45;1;8,18,31,34,38,-122,122,123;1;104;95;105;-122;2;95;132;132;0;-122;132;0;-122;132;7";
+        const $scriptletArglistRefs$ = /* 299 */ "133;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;131;91;131;62;101;85;131;133;2,99;133;131;16,32,67,100,102;10,125;14,15;46,113;131;131;131;131;131;16,67,100,102;131;68,72;10,125;93;58;11,96;131;122;131;62;93;2;132;131;133;131;83;103;131;133;93;25,111;0;106;133;2,76,86;93;82,133;133;93;131;131;131;131;131;45;113;107;4;75;133;3;8,18,31,34,38,-123,123,124;133;57;93;133;59;112;23,48,63,111,134;131;133;92;131;126,127;48,63,111,134;107;25,33,53;35;131;36;0;54,64;133;23;22,24;1;133;133;133;71;108,109;69,70,111;12;62;133;133;93;93;126,127;121,-123;77;81;81;47;0;17;17;93;20,30;74;49;26;111;133;133;-123;128;10;126,127;55;-123;80;79;133;44;114,115,116,117,118;133;133;62;26;133;126,127;-123;93;81;126,127;37;2;90;23;61;0;131;-123;128;133;40;55;-123;-123;126,127;126,127;-123;79;88;97;48,63,111,134;93;-123;-123;93;6;-123;-123;-123;41;42;94,111;108,109;-123;56;133;-123;133;133;48,63,134;48,63,134;48,63,134;93;5;126,127;50;131;29;28,65;-123;-123;93;-123;110;-123;79;133;-123;74;12;25,27;119,120;133;43;-123;129,130;89,98;133;52;9;-123;55;133;133;93;108,109;110;133;133;84;-123;51,133;21;128;1;8,18,31,34,38;1;66;-123;13;133;-123;0;22;78;2;-123;126,127;-123;-123;60;128;19;39;87;8,18,31,34,38;133;-116,-117,-118,-119;73;48,63,111,134;108,109;131;2;-123;131;-123;131;133;133;133;-123;45;1;8,18,31,34,38,-123,123,124;1;104;95;105;-123;2;95;133;133;0;-123;133;0;-123;133;7";
         const arglistRefs = $scriptletArglistRefs$.split(';');
         for ( const i of todoIndices ) {
             for ( const ref of JSON.parse(`[${arglistRefs[i]}]`) ) {
@@ -1154,10 +1187,10 @@ if ( $hasRegexes$ ) {
 
 // Execute scriptlets
 if ( todo.size && todo.has(0) === false ) {
-    const $scriptletFunctions$ = /* 9 */
-[closeWindow,removeCookie,hrefSanitizer,removeClass,removeNodeText,setAttr,setCookie,setLocalStorageItem,setCookieReload];
-    const $scriptletArgs$ = /* 189 */ ["/^bda|^bltsr/","hurricane","isab","shedevrum-aab","yadb","a[href*=\"&link=https://\"]","?link","a[href*=\".mck\"][href*=\".ru/c/\"]","?u","a[href*=\".php?go=\"]","?go","a[href*=\"/away.php?\"]","?to -uricomponent","a[href*=\"/away?\"]","?to","a[href*=\"/bitrix/rk.php?goto=https\"]","?goto","a[href*=\"/redir.php?r=\"]","?r","a[href*=\"/redir/\"]","?exturl","?vzurl","a[href*=\"/redirect?to=\"]","a[href*=\"://click.opennet.ru/cgi-bin/\"]","a[href*=\"://opros.mosreg.ru/callback/survey\"][href*=\"/direct_url/?redirect=\"]","?redirect","a[href*=\"?action=redirect&url=\"]","?url","a[href*=\"?utm_\"][data-main-link]","+https","a[href*=\"deeplink=\"]","?deeplink","a[href*=\"goto=https\"]","a[href*=\"to=aHR0c\"]","?to -base64","a[href*=\"to=https\"]","a[href*=\"ulp=\"][target=\"_blank\"]","?ulp","a[href*=\"url=aHR0c\"]","?url -base64","a[href][rel*=\"sponsored\"][target=\"_blank\"]","a[href^=\"//www.ixbt.com/click/?c=\"]","[title]","a[href^=\"/engine/dwn\"]","?xf","a[href^=\"http:\"][aria-label^=\"Перейти на страницу источника\"]","a[href^=\"https://click.email4customers.com/Link?\"]","?args","a[href^=\"https://go.2038.pro/\"][href*=\"?dl=\"]","?dl","a[href^=\"https://pikabu.ru/\"][href*=\"?u=http\"]","a[href^=\"https://robot.mos.ru/\"]","a[href^=\"https://rutube.ru/api/routing/\"][href*=\"away?target\"]","?target","a[href^=\"https://soft2u.ru/url.php?to=\"]","a[href^=\"https://www.google.com/url?q=\"]","a[href^=\"https://www.gosuslugi.ru/ref?t=\"]","a[href^=\"https://www.livejournal.com/away?to=\"]","a[href^=\"https://www.youtube.com/redirect?event=\"][href*=\"&q=http\"]","?q","b-global-branding","html","noscroll","body","#text","РЕКЛАМНЫЙ БЛОК:","Реклама","Реклама:","a","/Установите Яндекс Браузер|Установить поиск Яндекса/","script","decodeURIComponent(escape","/A.d.b.|Adb-|A-d-b-|-Gua|dGua|dblo|tick|Адгу-/","/checkAds|initAdblockCheck/","/document.head.appendChild|document.referrer/","/gtag\\('event'/","MsgNoAD","addPlaceholder","checkAdBlock","clickedOnContent","error-report.com","getComputedStyle","isAdBlock","message_ads","nidclick","right_click","showBanner","style","epom-brend","lb-banner-height","rose.ixbt.com/banner/","._1z_ ._21_","",".comment-media .andropov-video video","loop","true",".content-custom [href*=\"?from=\"]:not([href*=\"utm\"])","target",".cycle-carousel-wrap > a.bottom_slide__item > img","src","[data-src]",".drag_element a[href*=\".html\"]",".owl-item > a > img","a[href*=\"?from=newsfeed\"][data-role=\"title-link\"]","img[src=\"https://overclockers.ru/assets/logo_gray_stub.gif\"]","video","controls","video[controls=\"controls\"]","KUF_SUGGESTER_SHOW_2_ITERATION","1","adBlockModal","age_confirmed","auth-required-win","callToRegisterClosed","clear","ok","reload","cookieAccepted","cookie_consent_shown","cookie_policy_accepted","110","geoid","32767","/","dontOverwrite","kuf_agr","lk-hasConsent","True","mose-banner","pg_SuggestGameFollow","promo-toast-tg","purchase_invite_shown","telegram_popup","Y","unity_pause_sso","yandexFull","__videoboxActive","false","browser-switch-trap-ts","{}","headerBannerShownAt","pg_GPbackVideo","on","rekl_modal_shown","video-autoplay","vipler.player.live.play","visits-count:plus-promotion","$remove$","/acestream/i","/dispatch","/p/?q=","utm","/adtag|creative_id/","/initTeasers|initVads/","is_age_verified","has-fullscreen-banner|has-right-direct",".public__root","stay","[href*=\"url=https\"]","#progress-value","data-timer","25","/DistributionLinkBro|-masonry-feed-/","return;try","/0,window|a0_0x|ad-provider|AdProvider|adManager|atOptions|disconnect|document,window|globalThis|isTrusted|parentNode\\.removeChild|Math\\.random|MAX_CLICKS|setTimeout/","getElementById","includes","referrer","/divExo|ex-over-top|214748364/","[href^=\"https://checklink.mail.ru/proxy?\"]","[href^=\"https://click.mail.ru/redir?u=\"]","[href^=\"https://clicker.mail.ru/redir?u=\"]","violatedDirective","[data-cke-saved-href^=\"https://checklink.mail.ru/proxy?\"]",".html-fishing a","html[lang]","href-sanitizer",".specialcontdown > a[href^=\"/download?downloadlink=\"]","?downloadlink",".specialcontdown > a","download","is_mobile","no","rwDemo","rws","[class^=\"articleBlockVideo_\"] video[src*=\"hsmedia.ru/\"]","video[class*=\"HLSPlayback_player\"]","\"Shadow","/agl007|blockPage/"];
-    const $scriptletArglists$ = /* 134 */ ";0;1,0;1,1;1,2;1,3;1,4;2,5,6;2,7,8;2,9,10;2,11,12;2,13,14;2,15,16;2,17,18;2,19,20;2,19,21;2,22,14;2,23,14;2,24,25;2,26,27;2,28,29;2,30,31;2,32,16;2,33,34;2,35,14;2,36,37;2,38,39;2,40,16;2,41,42;2,43,44;2,45,29;2,46,47;2,48,49;2,50,8;2,51,27;2,52,53;2,54,14;2,55;2,56,14;2,57,14;2,58,59;3,60,61;3,62,63;4,64,65;4,64,66;4,64,67;4,68,69;4,70,71;4,70,72;4,70,73;4,70,74;4,70,75;4,70,76;4,70,77;4,70,78;4,70,79;4,70,80;4,70,81;4,70,82;4,70,83;4,70,84;4,70,85;4,70,86;4,87,88;4,87,89;4,87,90;5,91,87,92;5,93,94,95;5,96,97,95;5,98,99,100;5,101,97,95;5,102,99,100;5,103,97,95;5,104,99,100;5,105,106,95;5,107,106,95;6,108,109;6,110,95;6,111,109;6,112,95;6,113,95;6,114,115,92,116,109;6,117,95;6,118,109;6,119,120;6,121,122,123,124,109;6,125,95;6,126,127;6,128,95;6,129,95;6,130,95;6,131,109;6,132,133;6,134,109,92,116,109;6,135,95;7,136,137;7,138,139;7,140,109;7,141,142;7,143,139;7,144,137;7,145,137;7,146,147;0,148;0,149;0,150;0,151;0,152;4,70,153;8,154,109;3,155,156,157;2,158,27;5,159,160,161;4,70,162;4,70,163;4,70,164;4,70,165,166,167;4,87,168;2,169,27;2,170,8;2,171,8;4,70,172;2,173;5,174,97,95;5,175,176,95;2,177,178;5,179,180;6,181,182,92,116,109;7,183,147;7,184,147;5,185,106,95;5,186,106,95;4,70,187;4,70,188";
+    const $scriptletFunctions$ = /* 10 */
+[closeWindow,removeCookie,hrefSanitizer,removeClass,removeNodeText,setAttr,setCookie,setLocalStorageItem,setCookieReload,preventNavigation];
+    const $scriptletArgs$ = /* 190 */ ["/^bda|^bltsr/","hurricane","isab","shedevrum-aab","yadb","a[href*=\"&link=https://\"]","?link","a[href*=\".mck\"][href*=\".ru/c/\"]","?u","a[href*=\".php?go=\"]","?go","a[href*=\"/away.php?\"]","?to -uricomponent","a[href*=\"/away?\"]","?to","a[href*=\"/bitrix/rk.php?goto=https\"]","?goto","a[href*=\"/redir.php?r=\"]","?r","a[href*=\"/redir/\"]","?exturl","?vzurl","a[href*=\"/redirect?to=\"]","a[href*=\"://click.opennet.ru/cgi-bin/\"]","a[href*=\"://opros.mosreg.ru/callback/survey\"][href*=\"/direct_url/?redirect=\"]","?redirect","a[href*=\"?action=redirect&url=\"]","?url","a[href*=\"?utm_\"][data-main-link]","+https","a[href*=\"deeplink=\"]","?deeplink","a[href*=\"goto=https\"]","a[href*=\"to=aHR0c\"]","?to -base64","a[href*=\"to=https\"]","a[href*=\"ulp=\"][target=\"_blank\"]","?ulp","a[href*=\"url=aHR0c\"]","?url -base64","a[href][rel*=\"sponsored\"][target=\"_blank\"]","a[href^=\"//www.ixbt.com/click/?c=\"]","[title]","a[href^=\"/engine/dwn\"]","?xf","a[href^=\"http:\"][aria-label^=\"Перейти на страницу источника\"]","a[href^=\"https://click.email4customers.com/Link?\"]","?args","a[href^=\"https://go.2038.pro/\"][href*=\"?dl=\"]","?dl","a[href^=\"https://pikabu.ru/\"][href*=\"?u=http\"]","a[href^=\"https://robot.mos.ru/\"]","a[href^=\"https://rutube.ru/api/routing/\"][href*=\"away?target\"]","?target","a[href^=\"https://soft2u.ru/url.php?to=\"]","a[href^=\"https://www.google.com/url?q=\"]","a[href^=\"https://www.gosuslugi.ru/ref?t=\"]","a[href^=\"https://www.livejournal.com/away?to=\"]","a[href^=\"https://www.youtube.com/redirect?event=\"][href*=\"&q=http\"]","?q","b-global-branding","html","noscroll","body","#text","РЕКЛАМНЫЙ БЛОК:","Реклама","Реклама:","a","/Установите Яндекс Браузер|Установить поиск Яндекса/","script","decodeURIComponent(escape","/A.d.b.|Adb-|A-d-b-|-Gua|dGua|dblo|tick|Адгу-/","/checkAds|initAdblockCheck/","/document.head.appendChild|document.referrer/","/gtag\\('event'/","MsgNoAD","addPlaceholder","checkAdBlock","clickedOnContent","error-report.com","getComputedStyle","isAdBlock","message_ads","nidclick","right_click","showBanner","style","epom-brend","lb-banner-height","rose.ixbt.com/banner/","._1z_ ._21_","",".comment-media .andropov-video video","loop","true",".content-custom [href*=\"?from=\"]:not([href*=\"utm\"])","target",".cycle-carousel-wrap > a.bottom_slide__item > img","src","[data-src]",".drag_element a[href*=\".html\"]",".owl-item > a > img","a[href*=\"?from=newsfeed\"][data-role=\"title-link\"]","img[src=\"https://overclockers.ru/assets/logo_gray_stub.gif\"]","video","controls","video[controls=\"controls\"]","KUF_SUGGESTER_SHOW_2_ITERATION","1","adBlockModal","age_confirmed","auth-required-win","callToRegisterClosed","clear","ok","reload","cookieAccepted","cookie_consent_shown","cookie_policy_accepted","110","geoid","32767","/","dontOverwrite","kuf_agr","lk-hasConsent","True","mose-banner","pg_SuggestGameFollow","promo-toast-tg","purchase_invite_shown","telegram_popup","Y","unity_pause_sso","yandexFull","__videoboxActive","false","browser-switch-trap-ts","{}","headerBannerShownAt","pg_GPbackVideo","on","rekl_modal_shown","video-autoplay","vipler.player.live.play","visits-count:plus-promotion","$remove$","/acestream/i","/dispatch","/p/?q=","utm","/adtag|creative_id/","/initTeasers|initVads/","is_age_verified","has-fullscreen-banner|has-right-direct",".public__root","stay","[href*=\"url=https\"]","#progress-value","data-timer","25","/DistributionLinkBro|-masonry-feed-/","a[href=\"http://static.fastpic.ru/fpuploader/FPUploader.exe\"]","/^(?!fastpic\\.org)/","getElementById","includes","referrer","/divExo|ex-over-top/","/__BIM__|box-shadow|initCustomEvent|Math\\.random|tOptions/","[href^=\"https://checklink.mail.ru/proxy?\"]","[href^=\"https://click.mail.ru/redir?u=\"]","[href^=\"https://clicker.mail.ru/redir?u=\"]","violatedDirective","[data-cke-saved-href^=\"https://checklink.mail.ru/proxy?\"]",".html-fishing a","html[lang]","href-sanitizer",".specialcontdown > a[href^=\"/download?downloadlink=\"]","?downloadlink",".specialcontdown > a","download","is_mobile","no","rwDemo","rws","[class^=\"articleBlockVideo_\"] video[src*=\"hsmedia.ru/\"]","video[class*=\"HLSPlayback_player\"]","\"Shadow","/agl007|blockPage/"];
+    const $scriptletArglists$ = /* 135 */ ";0;1,0;1,1;1,2;1,3;1,4;2,5,6;2,7,8;2,9,10;2,11,12;2,13,14;2,15,16;2,17,18;2,19,20;2,19,21;2,22,14;2,23,14;2,24,25;2,26,27;2,28,29;2,30,31;2,32,16;2,33,34;2,35,14;2,36,37;2,38,39;2,40,16;2,41,42;2,43,44;2,45,29;2,46,47;2,48,49;2,50,8;2,51,27;2,52,53;2,54,14;2,55;2,56,14;2,57,14;2,58,59;3,60,61;3,62,63;4,64,65;4,64,66;4,64,67;4,68,69;4,70,71;4,70,72;4,70,73;4,70,74;4,70,75;4,70,76;4,70,77;4,70,78;4,70,79;4,70,80;4,70,81;4,70,82;4,70,83;4,70,84;4,70,85;4,70,86;4,87,88;4,87,89;4,87,90;5,91,87,92;5,93,94,95;5,96,97,95;5,98,99,100;5,101,97,95;5,102,99,100;5,103,97,95;5,104,99,100;5,105,106,95;5,107,106,95;6,108,109;6,110,95;6,111,109;6,112,95;6,113,95;6,114,115,92,116,109;6,117,95;6,118,109;6,119,120;6,121,122,123,124,109;6,125,95;6,126,127;6,128,95;6,129,95;6,130,95;6,131,109;6,132,133;6,134,109,92,116,109;6,135,95;7,136,137;7,138,139;7,140,109;7,141,142;7,143,139;7,144,137;7,145,137;7,146,147;0,148;0,149;0,150;0,151;0,152;4,70,153;8,154,109;3,155,156,157;2,158,27;5,159,160,161;4,70,162;2,163,29;9,164;4,70,165,166,167;4,87,168;4,70,169;2,170,27;2,171,8;2,172,8;4,70,173;2,174;5,175,97,95;5,176,177,95;2,178,179;5,180,181;6,182,183,92,116,109;7,184,147;7,185,147;5,186,106,95;5,187,106,95;4,70,188;4,70,189";
     const arglists = $scriptletArglists$.split(';');
     const args = $scriptletArgs$;
     for ( const ref of todo ) {
